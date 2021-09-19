@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Space , Input, Button, Card, InputNumber, List, Tag } from "antd";
+import { Link } from "react-router-dom";
 
 const SupplierViewRequisitions = () => {
 
@@ -11,7 +12,7 @@ const SupplierViewRequisitions = () => {
         <Card
           type="inner"
           title="100 Metal bars"
-          extra={<Button type="primary">Apply</Button>}
+          extra={<Link to="/applied-orders"><Button type="primary">Apply</Button></Link>}
         >
           <p>Site: Malabe</p>
           <p>Order date: 2021-11-11</p>
