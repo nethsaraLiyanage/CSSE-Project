@@ -5,6 +5,9 @@ import PlaceOrder from './components/StaffComponents/PlaceOrder';
 import SupplierViewRequisitions from './components/SupplierComponents/SupplierViewRequisitions';
 import SupplierOrders from './components/SupplierComponents/SupplierOrders';
 import AppliedOrders from './components/SupplierComponents/AppliedOrders';
+import CompletedOrders from './components/AccountingStaffComponents/CompletedOrders';
+import PaymentPage from './components/AccountingStaffComponents/PaymentPage';
+import PaidOrders from './components/AccountingStaffComponents/PaidOrders';
 import "antd/dist/antd.css";
 
 function App() {
@@ -26,6 +29,15 @@ function App() {
         </Route>
         <Route exact path="/applied-orders">
           <AppliedOrders/>
+        </Route>
+        <Route exact path="/completed-orders">
+          <CompletedOrders/>
+        </Route>
+        <Route exact path="/payment">
+          <PaymentPage/>
+        </Route>
+        <Route exact path="/paid-orders">
+          <PaidOrders/>
         </Route>
         </Switch>
       </div>

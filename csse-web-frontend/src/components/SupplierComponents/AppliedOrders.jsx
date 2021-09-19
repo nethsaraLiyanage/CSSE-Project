@@ -22,7 +22,7 @@ const AppliedOrders = () => {
         <Card
           style={{ marginTop: 16 }}
           type="inner"
-          title="Supplier 002"
+          title="Cement"
           extra={<Button type="danger">Cancel</Button>}
         >
          <p>Site:  Malabe</p>
