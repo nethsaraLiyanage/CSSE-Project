@@ -3,6 +3,7 @@ import { Modal, Space, Button, Card, Avatar, List, Tag } from "antd";
 import { Link } from "react-router-dom";
 
 const SupplierOrders = () => {
+
   const [isModalVisible, setIsModalVisible] = useState(false);
 
   const showModal = () => {
@@ -16,6 +17,7 @@ const SupplierOrders = () => {
   const handleCancel = () => {
     setIsModalVisible(false);
   };
+
 
   return (
     <div>
