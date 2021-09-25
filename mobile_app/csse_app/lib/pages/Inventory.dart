@@ -97,6 +97,72 @@ class Inventory extends StatelessWidget {
                   )
                 ],
               ),
+              space10(),
+              SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  children: [
+                    DataTable(
+                      columns: [
+                        DataColumn(
+                            label: Text('Item',
+                                style: TextStyle(
+                                    fontSize: 10,
+                                    fontWeight: FontWeight.bold))),
+                        DataColumn(
+                            label: Text('Status',
+                                style: TextStyle(
+                                    fontSize: 10,
+                                    fontWeight: FontWeight.bold))),
+                        DataColumn(
+                            label: Text('Count',
+                                style: TextStyle(
+                                    fontSize: 10,
+                                    fontWeight: FontWeight.bold))),
+                        DataColumn(
+                            label: Text('Actions',
+                                style: TextStyle(
+                                    fontSize: 10, fontWeight: FontWeight.bold)))
+                      ],
+                      rows: [
+                        DataRow(cells: [
+                          DataCell(Text('1', style: TextStyle(fontSize: 10))),
+                          DataCell(Text('1', style: TextStyle(fontSize: 10))),
+                          DataCell(Text('1', style: TextStyle(fontSize: 10))),
+                          DataCell(
+                            Center(
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: <Widget>[
+                                  FlatButton(
+                                    textColor: Colors.white,
+                                    //height: 60.0,
+                                    color: Colors.cyan,
+                                    onPressed: () {},
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Padding(
+                                          padding: const EdgeInsets.all(0.0),
+                                          child: Icon(
+                                            Icons.add,
+                                            color: Colors.white,
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ]),
+                      ],
+                    )
+                  ],
+                ),
+              )
             ],
           ),
         ),
