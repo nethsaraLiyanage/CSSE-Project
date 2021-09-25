@@ -1,6 +1,7 @@
 import 'package:csse_app/pages/Dashboard.dart';
 import 'package:csse_app/pages/Inventory.dart';
 import 'package:csse_app/pages/Login.dart';
+import 'package:csse_app/pages/OrderList.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -20,6 +21,7 @@ class MyApp extends StatelessWidget {
         '/login': (context) => Login(),
         '/dash' : (context) => Dashboard(),
         '/inventory' : (context) => Inventory(),
+        '/orderlist' : (context) => OrderList(),
         },
     );
   }
