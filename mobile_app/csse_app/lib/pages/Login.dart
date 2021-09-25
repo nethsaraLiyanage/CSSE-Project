@@ -49,7 +49,7 @@ class _LoginState extends State<Login> {
                   decoration: InputDecoration(
                     focusedBorder: OutlineInputBorder(
                         borderSide: BorderSide(color: Colors.blue, width: 2.0),
-                        borderRadius: BorderRadius.circular(20))h,
+                        borderRadius: BorderRadius.circular(20)),
                     enabledBorder: OutlineInputBorder(
                         borderSide: BorderSide(color: Colors.blue, width: 2.0),
                         borderRadius: BorderRadius.circular(20)),
@@ -101,8 +101,9 @@ class _LoginState extends State<Login> {
                             padding: MaterialStateProperty.all<EdgeInsets>(
                                 EdgeInsets.all(15)),
                             foregroundColor:
-                                MaterialStateProperty.all<Color>(Colors.red),
-                            backgroundColor: MaterialStateProperty.all(Colors.red),
+                                MaterialStateProperty.all<Color>(Colors.white),
+                            backgroundColor:
+                                MaterialStateProperty.all(Colors.red),
                             shape: MaterialStateProperty.all<
                                     RoundedRectangleBorder>(
                                 RoundedRectangleBorder(
