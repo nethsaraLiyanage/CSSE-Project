@@ -73,6 +73,7 @@ class _LoginState extends State<Login> {
                 ),
                 SizedBox(height: 10),
                 TextField(
+                  obscureText: true,
                   cursorColor: Colors.black,
                   style: TextStyle(color: Colors.blueGrey),
                   decoration: InputDecoration(
