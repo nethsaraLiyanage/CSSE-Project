@@ -283,9 +283,8 @@ class _DashboardState extends State<Dashboard> {
                         width: 200,
                         child: Card(
                           child: new InkWell(
-                            onTap: () {
-                              print("tapped");
-                            },
+                            onTap: () =>
+                                {Navigator.pushNamed(context, '/inventory')},
                             child: Column(
                               children: [
                                 space10(),

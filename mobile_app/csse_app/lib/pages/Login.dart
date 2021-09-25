@@ -44,8 +44,8 @@ class _LoginState extends State<Login> {
                 ),
                 SizedBox(height: 10),
                 TextField(
-                  cursorColor: Colors.white,
-                  style: TextStyle(color: Colors.white),
+                  cursorColor: Colors.black,
+                  style: TextStyle(color: Colors.blueGrey),
                   decoration: InputDecoration(
                     focusedBorder: OutlineInputBorder(
                         borderSide: BorderSide(color: Colors.blue, width: 2.0),
@@ -73,8 +73,8 @@ class _LoginState extends State<Login> {
                 ),
                 SizedBox(height: 10),
                 TextField(
-                  cursorColor: Colors.white,
-                  style: TextStyle(color: Colors.white),
+                  cursorColor: Colors.black,
+                  style: TextStyle(color: Colors.blueGrey),
                   decoration: InputDecoration(
                     focusedBorder: OutlineInputBorder(
                         borderSide: BorderSide(color: Colors.blue, width: 2.0),
