@@ -1,3 +1,4 @@
+import 'package:csse_app/pages/Dashboard.dart';
 import 'package:csse_app/pages/Login.dart';
 import 'package:flutter/material.dart';
 
@@ -14,7 +15,10 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       initialRoute: '/login',
-      routes: {'/login': (context) => Login()},
+      routes: {
+        '/login': (context) => Login(),
+        '/dash' : (context) => Dashboard(),
+        },
     );
   }
 }

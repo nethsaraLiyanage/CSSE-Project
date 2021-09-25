@@ -109,7 +109,8 @@ class _LoginState extends State<Login> {
                                 RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(18.0),
                                     side: BorderSide(color: Colors.red)))),
-                        onPressed: () {},
+                        onPressed: () =>
+                            {Navigator.pushNamed(context, '/dash')},
                       ),
                     )
                   ],
