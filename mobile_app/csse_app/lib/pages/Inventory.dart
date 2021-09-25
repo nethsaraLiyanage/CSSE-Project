@@ -158,10 +158,67 @@ class Inventory extends StatelessWidget {
                             ),
                           ),
                         ]),
+                        DataRow(cells: [
+                          DataCell(Text('1', style: TextStyle(fontSize: 10))),
+                          DataCell(Text('1', style: TextStyle(fontSize: 10))),
+                          DataCell(Text('1', style: TextStyle(fontSize: 10))),
+                          DataCell(
+                            Center(
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: <Widget>[
+                                  FlatButton(
+                                    textColor: Colors.white,
+                                    //height: 60.0,
+                                    color: Colors.cyan,
+                                    onPressed: () {},
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Padding(
+                                          padding: const EdgeInsets.all(0.0),
+                                          child: Icon(
+                                            Icons.add,
+                                            color: Colors.white,
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ]),
                       ],
                     )
                   ],
                 ),
+              ),
+              space10(),
+              Row(
+                children: [
+                  Expanded(
+                    flex: 1,
+                    child: TextButton(
+                      child: Text('Cancel'),
+                      style: ButtonStyle(
+                          padding: MaterialStateProperty.all<EdgeInsets>(
+                              EdgeInsets.all(15)),
+                          foregroundColor:
+                              MaterialStateProperty.all<Color>(Colors.white),
+                          backgroundColor:
+                              MaterialStateProperty.all(Colors.red),
+                          shape:
+                              MaterialStateProperty.all<RoundedRectangleBorder>(
+                                  RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(18.0),
+                                      side: BorderSide(color: Colors.red)))),
+                      onPressed: () => {Navigator.pushNamed(context, '/dash')},
+                    ),
+                  )
+                ],
               )
             ],
           ),
