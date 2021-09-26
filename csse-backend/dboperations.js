@@ -1,5 +1,7 @@
 var sql = require("mssql");
 const dbConfig = require("./dbconfig");
+const dotenv = require('dotenv');
+require('dotenv/config');
 
 async function getData(){
     // try{
@@ -10,18 +12,18 @@ async function getData(){
     // }
     var Connection = require('tedious').Connection;  
     var config = {  
-        server: 'mahendra-sql-server.database.windows.net',  //update me
+        server: process.env.SERVERNAME,  //update me
         authentication: {
             type: 'default',
             options: {
-                userName: 'mahendra-admin', //update me
-                password: '1040SL*@M001'  //update me
+                userName: process.env.USERNAME, //update me
+                password: process.env.PASSWORD  //update me
             }
         },
         options: {
             // If you are on Microsoft Azure, you need encryption:
             encrypt: true,
-            database: 'Procurement_System_DB'  //update me
+            database: process.env.DATABASENAME  //update me
         }
     };  
     var connection = new Connection(config);  
