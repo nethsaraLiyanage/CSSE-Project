@@ -8,7 +8,7 @@ const dboperations = require('./dboperations')
 
 const router = express.Router({});
 
-
+//retrive data
 router.get('/', async (req, res, _next) => {
 
     const request = new sql.Request()
@@ -29,6 +29,8 @@ router.get('/', async (req, res, _next) => {
 
 });
 
+
+//insert data
 router.post('/', async (req, res, _next) => {
 
     const ps = new sql.PreparedStatement();
