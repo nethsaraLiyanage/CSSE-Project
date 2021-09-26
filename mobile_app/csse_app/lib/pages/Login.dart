@@ -16,14 +16,14 @@ class _LoginState extends State<Login> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Padding(
-          padding: const EdgeInsets.fromLTRB(20.0, 50.0, 20.0, 50.0),
+          padding: const EdgeInsets.fromLTRB(30.0, 50.0, 30.0, 50.0),
           child: SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               // ignore: prefer_const_literals_to_create_immutables
               children: [
                 // ignore: prefer_const_constructors
-                Image.asset('assets/luxury.png'),
+                Image.asset('assets/logo2.png'),
                 lineheightBox(),
                 // ignore: prefer_const_constructors
                 lineheightBox(),
@@ -104,12 +104,12 @@ class _LoginState extends State<Login> {
                             foregroundColor:
                                 MaterialStateProperty.all<Color>(Colors.white),
                             backgroundColor:
-                                MaterialStateProperty.all(Colors.red),
+                                MaterialStateProperty.all(Colors.blue),
                             shape: MaterialStateProperty.all<
                                     RoundedRectangleBorder>(
                                 RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(18.0),
-                                    side: BorderSide(color: Colors.red)))),
+                                    side: BorderSide(color: Colors.blue)))),
                         onPressed: () =>
                             {Navigator.pushNamed(context, '/dash')},
                       ),
