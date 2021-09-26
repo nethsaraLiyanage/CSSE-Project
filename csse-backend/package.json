@@ -10,6 +10,7 @@
     "express": "^4.17.1",
     "mssql": "^7.2.1",
     "mysql": "^2.18.1",
+    "sequelize": "^6.6.5",
     "tedious": "^12.2.0"
   },
   "devDependencies": {
