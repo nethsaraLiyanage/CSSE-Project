@@ -1,24 +1,15 @@
-// const express = require('express');
-// const cors = require("cors");
-// const bodyParser = require('body-parser');
-// const dotenv = require('dotenv');
-// const router = express.Router({});
-// var sql = require("mssql");
-// const app = express();
-// const http = require('http')
-// const dbConfig = require("./dbconfig");
-// const dbOperations = require("./dboperations");
-
 // app imports  
 const express = require('express')
 const app = express()
 const bodyParser = require('body-parser')
 const cors = require('cors')
 const router = express.Router({});
+const { Sequelize } = require('sequelize');
 require('dotenv/config')
 
 //other imports
 const dbOperations = require("./dboperations");
+const sequelize = require("./sequelize");
 
 //routes imports
 const health = require('./health')
@@ -35,7 +26,10 @@ app.use('/health', health)
 app.use('/test', test)
 
 //stablish MSSQL Db connection
-dbOperations;
+dbOperations.getConnection;
+
+//initilze seqlize
+sequelize.getConnection
 
 //server start
 app.listen(PORT, () =>{
