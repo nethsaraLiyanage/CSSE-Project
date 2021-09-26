@@ -44,7 +44,7 @@ module.exports = function(sequelize, DataTypes) {
     },
     Delivery_Mgr_Id: {
       type: DataTypes.CHAR(5),
-      allowNull: false,
+      allowNull: true,
       references: {
         model: 'GeneralUser',
         key: 'User_ID'
