@@ -12,8 +12,9 @@ const dbOperations = require("./dboperations");
 const sequelize = require("./sequelize");
 
 //routes imports
-const health = require('./health')
-const test = require('./test')
+const health = require('./health');
+const test = require('./test');
+const UserRoute = require('./routes/UserRoute');
 
 const PORT = process.env.PORT || 8080;
 
@@ -22,8 +23,9 @@ app.use(bodyParser.json())
 app.use(cors())
 
 //routes
-app.use('/health', health)
-app.use('/test', test)
+app.use('/health', health);
+app.use('/test', test);
+app.use('/user', UserRoute);
 
 //stablish MSSQL Db connection
 dbOperations.getConnection;
