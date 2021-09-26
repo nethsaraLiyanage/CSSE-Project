@@ -1,38 +1,43 @@
-const express = require('express');
-const cors = require("cors");
-const bodyParser = require('body-parser');
-const dotenv = require('dotenv');
+// const express = require('express');
+// const cors = require("cors");
+// const bodyParser = require('body-parser');
+// const dotenv = require('dotenv');
+// const router = express.Router({});
+// var sql = require("mssql");
+// const app = express();
+// const http = require('http')
+// const dbConfig = require("./dbconfig");
+// const dbOperations = require("./dboperations");
+
+// app imports  
+const express = require('express')
+const app = express()
+const bodyParser = require('body-parser')
+const cors = require('cors')
 const router = express.Router({});
-var sql = require("mssql");
-const app = express();
-const http = require('http')
-require('dotenv/config');
-const dbConfig = require("./dbconfig");
+require('dotenv/config')
+
+//other imports
 const dbOperations = require("./dboperations");
 
+//routes imports
 const health = require('./health')
+const test = require('./test')
 
-const PORT = process.env.PORT || 8090;
+const PORT = process.env.PORT || 8080;
 
 //Middleware
-app.use(cors())
 app.use(bodyParser.json())
+app.use(cors())
 
 //routes
 app.use('/health', health)
-
-//socket.io implementation
-const server = http.createServer(app)
+app.use('/test', test)
 
 //stablish MSSQL Db connection
-dbOperations.getConnection;
-
-
-
-
+dbOperations;
 
 //server start
-server.listen(PORT, () =>{
-    console.log('server is up and running on port :' + PORT);
+app.listen(PORT, () =>{
+    console.log('server is at', PORT);
 });
-
