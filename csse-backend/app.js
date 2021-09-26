@@ -10,11 +10,16 @@ require('dotenv/config');
 const dbConfig = require("./dbconfig");
 const dbOperations = require("./dboperations");
 
+const health = require('./health')
+
 const PORT = process.env.PORT || 8090;
 
 //Middleware
 app.use(cors())
 app.use(bodyParser.json())
+
+//routes
+app.use('/health', health)
 
 //socket.io implementation
 const server = http.createServer(app)
