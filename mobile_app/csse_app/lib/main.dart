@@ -1,11 +1,9 @@
 import 'package:csse_app/pages/Dashboard.dart';
 import 'package:csse_app/pages/Inventory.dart';
 import 'package:csse_app/pages/Login.dart';
-<<<<<<< HEAD
 import 'package:csse_app/pages/OrderList.dart';
-=======
 import 'package:csse_app/pages/Requisition.dart';
->>>>>>> 4dbf5137b21906fe5de99aa830ec1f002a8f065d
+import 'package:csse_app/pages/Order.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -20,16 +18,14 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      initialRoute: '/requisition',
+      initialRoute: '/order',
       routes: {
         '/login': (context) => Login(),
         '/dash' : (context) => Dashboard(),
         '/inventory' : (context) => Inventory(),
-<<<<<<< HEAD
         '/orderlist' : (context) => OrderList(),
-=======
         '/requisition' : (context) => Requisition(),
->>>>>>> 4dbf5137b21906fe5de99aa830ec1f002a8f065d
+        '/order' : (context) => Order(),
         },
     );
   }
