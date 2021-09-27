@@ -2,6 +2,7 @@ var DataTypes = require("sequelize").DataTypes;
 var _GeneralUser = require("./GeneralUser");
 var _Goods_Recipt = require("./Goods_Recipt");
 var _Goods_Recipt_Order_Items_Qty = require("./Goods_Recipt_Order_Items_Qty");
+var _Inventory = require("./Inventory");
 var _Invoice = require("./Invoice");
 var _Item_Supplier = require("./Item_Supplier");
 var _Item_Supplier_Supplying_Items = require("./Item_Supplier_Supplying_Items");
@@ -19,6 +20,7 @@ function initModels(sequelize) {
   var GeneralUser = _GeneralUser(sequelize, DataTypes);
   var Goods_Recipt = _Goods_Recipt(sequelize, DataTypes);
   var Goods_Recipt_Order_Items_Qty = _Goods_Recipt_Order_Items_Qty(sequelize, DataTypes);
+  var Inventory = _Inventory(sequelize, DataTypes);
   var Invoice = _Invoice(sequelize, DataTypes);
   var Item_Supplier = _Item_Supplier(sequelize, DataTypes);
   var Item_Supplier_Supplying_Items = _Item_Supplier_Supplying_Items(sequelize, DataTypes);
@@ -36,8 +38,10 @@ function initModels(sequelize) {
   Items.belongsToMany(Goods_Recipt, { as: 'Recipt_No_Goods_Recipts', through: Goods_Recipt_Order_Items_Qty, foreignKey: "Item_No", otherKey: "Recipt_No" });
   Items.belongsToMany(Purchase_Order, { as: 'P_Order_Id_Purchase_Orders', through: Purchase_Order_Items_Qty, foreignKey: "Item_No", otherKey: "P_Order_Id" });
   Items.belongsToMany(Shipping_Order, { as: 'S_Order_Id_Shipping_Orders', through: Shipping_Order_Items_Qty, foreignKey: "Item_No", otherKey: "S_Order_Id" });
+  Items.belongsToMany(Site, { as: 'Site_Id_Sites', through: Inventory, foreignKey: "Item_No", otherKey: "Site_Id" });
   Purchase_Order.belongsToMany(Items, { as: 'Item_No_Items_Purchase_Order_Items_Qties', through: Purchase_Order_Items_Qty, foreignKey: "P_Order_Id", otherKey: "Item_No" });
   Shipping_Order.belongsToMany(Items, { as: 'Item_No_Items_Shipping_Order_Items_Qties', through: Shipping_Order_Items_Qty, foreignKey: "S_Order_Id", otherKey: "Item_No" });
+  Site.belongsToMany(Items, { as: 'Item_No_Items_Inventories', through: Inventory, foreignKey: "Site_Id", otherKey: "Item_No" });
   Goods_Recipt.belongsTo(GeneralUser, { as: "Delivery_Mgr", foreignKey: "Delivery_Mgr_Id"});
   GeneralUser.hasMany(Goods_Recipt, { as: "Goods_Recipts", foreignKey: "Delivery_Mgr_Id"});
   Payment.belongsTo(GeneralUser, { as: "Account_Staff", foreignKey: "Account_Staff_Id"});
@@ -58,6 +62,8 @@ function initModels(sequelize) {
   Item_Supplier.hasMany(Goods_Recipt, { as: "Goods_Recipts", foreignKey: "Item_Supplier_Id"});
   Goods_Recipt_Order_Items_Qty.belongsTo(Items, { as: "Item_No_Item", foreignKey: "Item_No"});
   Items.hasMany(Goods_Recipt_Order_Items_Qty, { as: "Goods_Recipt_Order_Items_Qties", foreignKey: "Item_No"});
+  Inventory.belongsTo(Items, { as: "Item_No_Item", foreignKey: "Item_No"});
+  Items.hasMany(Inventory, { as: "Inventories", foreignKey: "Item_No"});
   Item_Supplier_Supplying_Items.belongsTo(Items, { as: "Item_No_Item", foreignKey: "Item_No"});
   Items.hasMany(Item_Supplier_Supplying_Items, { as: "Item_Supplier_Supplying_Items", foreignKey: "Item_No"});
   Purchase_Order_Items_Qty.belongsTo(Items, { as: "Item_No_Item", foreignKey: "Item_No"});
@@ -78,6 +84,8 @@ function initModels(sequelize) {
   Shipping_Order.hasMany(Goods_Recipt, { as: "Goods_Recipts", foreignKey: "S_Order_Id"});
   Shipping_Order_Items_Qty.belongsTo(Shipping_Order, { as: "S_Order", foreignKey: "S_Order_Id"});
   Shipping_Order.hasMany(Shipping_Order_Items_Qty, { as: "Shipping_Order_Items_Qties", foreignKey: "S_Order_Id"});
+  Inventory.belongsTo(Site, { as: "Site", foreignKey: "Site_Id"});
+  Site.hasMany(Inventory, { as: "Inventories", foreignKey: "Site_Id"});
   Purchase_Order.belongsTo(Site, { as: "Site", foreignKey: "Site_Id"});
   Site.hasMany(Purchase_Order, { as: "Purchase_Orders", foreignKey: "Site_Id"});
   Item_Supplier.belongsTo(Supplier_Apply_Quota_Request, { as: "Request", foreignKey: "Request_Id"});
@@ -89,6 +97,7 @@ function initModels(sequelize) {
     GeneralUser,
     Goods_Recipt,
     Goods_Recipt_Order_Items_Qty,
+    Inventory,
     Invoice,
     Item_Supplier,
     Item_Supplier_Supplying_Items,

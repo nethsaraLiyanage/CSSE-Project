@@ -2,12 +2,13 @@ const Sequelize = require('sequelize');
 module.exports = function(sequelize, DataTypes) {
   return sequelize.define('Item_Supplier', {
     Item_Supplier_Id: {
-      type: DataTypes.CHAR(5),
+      autoIncrement: true,
+      type: DataTypes.INTEGER,
       allowNull: false,
       primaryKey: true
     },
     Request_Id: {
-      type: DataTypes.CHAR(5),
+      type: DataTypes.INTEGER,
       allowNull: false,
       references: {
         model: 'Supplier_Apply_Quota_Request',
@@ -15,7 +16,7 @@ module.exports = function(sequelize, DataTypes) {
       }
     },
     Supplier_ID: {
-      type: DataTypes.CHAR(5),
+      type: DataTypes.INTEGER,
       allowNull: false,
       references: {
         model: 'Supplier_Apply_Quota_Request',
