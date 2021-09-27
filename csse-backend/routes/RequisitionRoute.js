@@ -7,8 +7,8 @@ require('dotenv/config');
 
 const router = express.Router({});
 
-//get approved requisitions
-router.get('/', async (req, res, _next) => {
+//Get approved requisitions
+router.get('/approved', async (req, res, _next) => {
 
     models.Purchase_Order.findAll({
         where: {
@@ -19,6 +19,22 @@ router.get('/', async (req, res, _next) => {
         }],
     }).then( data => {
         res.json({Goods_Recipts :data});
+    })
+
+});
+
+//Get one approved requisition
+router.get('/approved/:id', async (req, res, _next) => {
+
+    models.Purchase_Order.findOne({
+        where: {
+            P_Order_Id: req.params.id
+        },
+        include: [{
+            model:models.Purchase_Order_Items_Qty, as: 'Purchase_Order_Items_Qties'
+        }],
+    }).then( data => {
+        res.json({Request :data});
     })
 
 });
@@ -67,7 +83,7 @@ router.post('/request/approve', async (req, res, _next) => {
          await shipping_order_qty.save();
 
          res.json({message: 'Order Placed Successfully'});
-     })
+     });
  }
  catch (e) {
      res.json({errors: e});
