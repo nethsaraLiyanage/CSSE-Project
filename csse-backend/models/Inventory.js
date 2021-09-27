@@ -1,13 +1,13 @@
 const Sequelize = require('sequelize');
 module.exports = function(sequelize, DataTypes) {
-  return sequelize.define('Shipping_Order_Items_Qty', {
-    S_Order_Id: {
+  return sequelize.define('Inventory', {
+    Site_Id: {
       type: DataTypes.INTEGER,
       allowNull: false,
       primaryKey: true,
       references: {
-        model: 'Shipping_Order',
-        key: 'S_Order_Id'
+        model: 'Site',
+        key: 'Site_Id'
       }
     },
     Item_No: {
@@ -21,23 +21,23 @@ module.exports = function(sequelize, DataTypes) {
     },
     Remaining_Qty: {
       type: DataTypes.FLOAT,
-      allowNull: true
+      allowNull: false
     },
-    Total_Qty: {
+    Threshold: {
       type: DataTypes.FLOAT,
       allowNull: true
     }
   }, {
     sequelize,
-    tableName: 'Shipping_Order_Items_Qty',
+    tableName: 'Inventory',
     schema: 'dbo',
     timestamps: false,
     indexes: [
       {
-        name: "Shipping_Order_Items_Qty_pk",
+        name: "Inventory_pk",
         unique: true,
         fields: [
-          { name: "S_Order_Id" },
+          { name: "Site_Id" },
           { name: "Item_No" },
         ]
       },
