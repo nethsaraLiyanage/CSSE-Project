@@ -1,33 +1,39 @@
-const express = require('express');
-const cors = require("cors");
-const bodyParser = require('body-parser');
-const dotenv = require('dotenv');
+// app imports  
+const express = require('express')
+const app = express()
+const bodyParser = require('body-parser')
+const cors = require('cors')
 const router = express.Router({});
-var sql = require("mssql");
-const app = express();
-const http = require('http')
-require('dotenv/config');
-const dbConfig = require("./dbconfig");
-const dbOperations = require("./dboperations");
+const { Sequelize } = require('sequelize');
+require('dotenv/config')
 
-const PORT = process.env.PORT || 8090;
+//other imports
+const dbOperations = require("./dboperations");
+const sequelize = require("./sequelize");
+
+//routes imports
+const health = require('./health');
+const test = require('./test');
+const UserRoute = require('./routes/UserRoute');
+
+const PORT = process.env.PORT || 8080;
 
 //Middleware
-app.use(cors())
 app.use(bodyParser.json())
+app.use(cors())
 
-//socket.io implementation
-const server = http.createServer(app)
+//routes
+app.use('/health', health);
+app.use('/test', test);
+app.use('/user', UserRoute);
 
 //stablish MSSQL Db connection
 dbOperations.getConnection;
 
-
-
-
+//initilze seqlize
+sequelize.getConnection
 
 //server start
-server.listen(PORT, () =>{
-    console.log('server is up and running on port :' + PORT);
+app.listen(PORT, () =>{
+    console.log('server is at', PORT);
 });
-
