@@ -24,7 +24,7 @@ router.get('/', async (req, res, _next) => {
 });
 
 //Post Quota request
-router.post('/', async (req, res, _next) => {
+router.post('/request-quota', async (req, res, _next) => {
 
         const quota = models.Quota_Request.build({
             P_Order_Id: req.body.order,
@@ -39,18 +39,39 @@ router.post('/', async (req, res, _next) => {
         })
 });
 
-router.put('/', async (req, res, _next) => {
+//Approve supplier request
+router.post('/request/approve', async (req, res, _next) => {
 
-    models.Purchase_Order_Items_Qty.findOne({
-        where: {
-            P_Order_Id: 'PO001',
-            Item_No: 'I0001'
-        }
-    }).then(data => {
+ try {
+     const supplier_item = models.Item_Supplier.build({
+         Request_Id: req.body.request_Id,
+         Supplier_ID: req.body.supplier,
+     });
+     await supplier_item.save();
 
+     const shipping_order = models.Shipping_Order.build({
+         Ordered_Date: req.body.order_date,
+         Status: 'pending',
+         Required_Date: req.body.requested_date,
+         Sub_Total: req.body.total,
+         P_Order_Id: req.body.p_order
+     });
 
-    });
+     await shipping_order.save().then(async data => {
+         const shipping_order_qty =  await models.Shipping_Order_Items_Qty.build({
+             S_Order_Id: data.get({plain:true}).S_Order_Id,
+             Item_No: req.body.item,
+             Remaining_Qty: req.body.quantity,
+             Total_Qty: req.body.quantity,
+         });
+         await shipping_order_qty.save();
 
+         res.json({message: 'Order Placed Successfully'});
+     })
+ }
+ catch (e) {
+     res.json({errors: e});
+ }
 });
 
 
