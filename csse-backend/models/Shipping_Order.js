@@ -2,7 +2,8 @@ const Sequelize = require('sequelize');
 module.exports = function(sequelize, DataTypes) {
   return sequelize.define('Shipping_Order', {
     S_Order_Id: {
-      type: DataTypes.CHAR(5),
+      autoIncrement: true,
+      type: DataTypes.INTEGER,
       allowNull: false,
       primaryKey: true
     },
@@ -23,7 +24,7 @@ module.exports = function(sequelize, DataTypes) {
       allowNull: true
     },
     P_Order_Id: {
-      type: DataTypes.CHAR(5),
+      type: DataTypes.INTEGER,
       allowNull: false,
       references: {
         model: 'Purchase_Order',

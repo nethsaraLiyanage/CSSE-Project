@@ -2,7 +2,7 @@ const Sequelize = require('sequelize');
 module.exports = function(sequelize, DataTypes) {
   return sequelize.define('Goods_Recipt_Order_Items_Qty', {
     Recipt_No: {
-      type: DataTypes.CHAR(5),
+      type: DataTypes.INTEGER,
       allowNull: false,
       primaryKey: true,
       references: {
@@ -11,7 +11,7 @@ module.exports = function(sequelize, DataTypes) {
       }
     },
     Item_No: {
-      type: DataTypes.CHAR(5),
+      type: DataTypes.INTEGER,
       allowNull: false,
       primaryKey: true,
       references: {

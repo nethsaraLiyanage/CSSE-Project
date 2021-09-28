@@ -2,12 +2,12 @@ const Sequelize = require('sequelize');
 module.exports = function(sequelize, DataTypes) {
   return sequelize.define('Supplier_Apply_Quota_Request', {
     Request_Id: {
-      type: DataTypes.CHAR(5),
+      type: DataTypes.INTEGER,
       allowNull: false,
       primaryKey: true
     },
     Supplier_ID: {
-      type: DataTypes.CHAR(5),
+      type: DataTypes.INTEGER,
       allowNull: false,
       primaryKey: true,
       references: {
@@ -18,6 +18,14 @@ module.exports = function(sequelize, DataTypes) {
     request_price: {
       type: DataTypes.FLOAT,
       allowNull: false
+    },
+    Additional_Description: {
+      type: DataTypes.TEXT,
+      allowNull: true
+    },
+    No_Of_Deliveries: {
+      type: DataTypes.INTEGER,
+      allowNull: true
     }
   }, {
     sequelize,
