@@ -26,6 +26,15 @@ module.exports = function(sequelize, DataTypes) {
     No_Of_Deliveries: {
       type: DataTypes.INTEGER,
       allowNull: true
+    },
+    status: {
+      type: DataTypes.STRING(10),
+      allowNull: false,
+      defaultValue: "panding"
+    },
+    quantity: {
+      type: DataTypes.FLOAT,
+      allowNull: true
     }
   }, {
     sequelize,

@@ -1,0 +1,71 @@
+import React, { useEffect, useState } from "react";
+import { Space, Input, Button, Card, Avatar, List, Tag } from "antd";
+import axios from "axios";
+import {useHistory,useParams} from "react-router-dom";
+import moment from "moment";
+
+const ViewSupplierRequests = () => {
+
+    const  history = useHistory();
+    const params = useParams();
+    const [requests,setRequests] = useState([]);
+
+    const pID = params.poid;
+    const ItemID = params.iid;
+
+    useEffect(() => {
+
+        // if(username === null){
+        //   history.push("/login")
+        // }
+        axios.get("http://localhost:8090/requisition/supplier-request/"+pID+'/'+ItemID).then((res) => {
+            setRequests(res.data.Request);
+        }).catch((err) => {
+            console.log(err);
+        })
+    },[]);
+
+    const placeOrder = (rID, supID, orderDate) => {
+      const payload = {
+        request_Id: rID,
+        supplier: supID,
+        order_date: null,
+        requested_date:  null,
+        p_order: pID,
+        item: ItemID
+    }
+        axios.post("http://localhost:8090/requisition/request/approve", payload).then((res) => {
+          console.log(res.data.state);
+          if(res.data.state == 201){
+            alert("Order Placed Successfully")
+            window.location.reload();
+          }
+        }).catch((err) => {
+            console.log(err);
+        })
+    }
+
+
+
+  return (
+    <div>
+        {requests.map((request) => (
+        <Card
+          type="inner"
+          title={request.Supplier.Name}
+          extra={[<Button  disabled={request.status === 'approved'} onClick={ e => placeOrder(request.Request_Id,request.Supplier_ID,null,)}
+                           type="primary">Place Order</Button>, <Button type="danger">Cancel</Button>]}
+        >
+            <Space>
+            Deliver as :
+            <Tag color="#87d068">{request.No_Of_Deliveries}</Tag>
+            Units
+          </Space>
+          <p style={{ marginTop: 16 }}>{request.Additional_Description}</p>
+        </Card>
+        ))}
+    </div>
+  );
+};
+
+export default ViewSupplierRequests;

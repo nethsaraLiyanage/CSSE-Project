@@ -26,6 +26,11 @@ module.exports = function(sequelize, DataTypes) {
     Total_Qty: {
       type: DataTypes.FLOAT,
       allowNull: true
+    },
+    paymentStatus: {
+      type: DataTypes.STRING(10),
+      allowNull: true,
+      defaultValue: "Pending"
     }
   }, {
     sequelize,
