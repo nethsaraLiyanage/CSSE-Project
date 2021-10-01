@@ -15,9 +15,6 @@ const ViewSupplierRequests = () => {
 
     useEffect(() => {
 
-        // if(username === null){
-        //   history.push("/login")
-        // }
         axios.get("http://localhost:8090/requisition/supplier-request/"+pID+'/'+ItemID).then((res) => {
             setRequests(res.data.Request);
         }).catch((err) => {
@@ -38,8 +35,25 @@ const ViewSupplierRequests = () => {
           console.log(res.data.state);
           if(res.data.state == 201){
             alert("Order Placed Successfully")
-            window.location.reload();
+            history.push('/placed-orders')
           }
+        }).catch((err) => {
+            console.log(err);
+        })
+    }
+
+    const rejectRequest = (rID, supID) => {
+        const payload = {
+            request_Id: rID,
+            supplier: supID,
+        }
+        console.log(payload);
+        axios.put("http://localhost:8090/requisition/request/reject", payload).then((res) => {
+            console.log(res.data.state);
+            if(res.data.state == 200){
+                alert("Request Rejected")
+                window.location.reload();
+            }
         }).catch((err) => {
             console.log(err);
         })
@@ -54,7 +68,7 @@ const ViewSupplierRequests = () => {
           type="inner"
           title={request.Supplier.Name}
           extra={[<Button  disabled={request.status === 'approved'} onClick={ e => placeOrder(request.Request_Id,request.Supplier_ID,null,)}
-                           type="primary">Place Order</Button>, <Button type="danger">Cancel</Button>]}
+                           type="primary">Place Order</Button>, <Button onClick={ e => rejectRequest(request.Request_Id,request.Supplier_ID)} type="danger">Cancel</Button>]}
         >
             <Space>
             Deliver as :
