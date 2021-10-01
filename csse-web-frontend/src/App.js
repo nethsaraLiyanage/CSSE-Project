@@ -11,9 +11,13 @@ import PaidOrders from './components/AccountingStaffComponents/PaidOrders';
 import LMlogin from './components/LineManager/LMlogin';
 import LineManagerDash from './components/LineManager/LineManagerDash';
 import ViewRequisition from './components/StaffComponents/ViewRequisition';
+import ViewPlacedOrders from "./components/StaffComponents/ViewPlacedOrders";
+import ViewQuotaRequests from "./components/StaffComponents/ViewQuotaRequests";
 
 import "./assets/style.css";
 import "antd/dist/antd.css";
+
+
 
 function App() {
   return (
@@ -53,6 +57,12 @@ function App() {
         <Route exact path="/view-requisition/:rid">
           <ViewRequisition/>
         </Route>
+          <Route exact path="/placed-orders">
+            <ViewPlacedOrders/>
+          </Route>
+          <Route exact path="/all-quotas">
+            <ViewQuotaRequests/>
+          </Route>
         </Switch>
       </div>
     </Router>

@@ -28,6 +28,20 @@ const PaymentPage = () => {
     })
   },[]);
 
+  const makePayment = () => {
+    axios.put("http://localhost:8090/requisition/make-payment/"+sid+'/'+iid).then((res) => {
+      if(res.data.state == 200){
+        alert("Payment successful!");
+        history.push("/paid-orders")
+      }
+      else{
+        alert('Something went wrong');
+      }
+    }).catch((err) => {
+      console.log(err);
+    })
+  }
+
 
   return (
     <div>
@@ -39,7 +53,7 @@ const PaymentPage = () => {
       <p>Total amount: Rs 40 000.00</p>
       <p>Supplier: supplier 001</p>
       <p>Status:  Approved</p>
-            <Button type="primary">Confirm the Payment </Button>
+            <Button onClick={makePayment} type="primary">Confirm the Payment </Button>
     
     </Card>
     </div>

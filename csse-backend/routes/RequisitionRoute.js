@@ -1,5 +1,4 @@
 const express = require("express");
-const DataTypes = require("sequelize/lib/data-types");
 const sequelize = require("../sequelize");
 const initModels = require("../models/init-models");
 const models = initModels(sequelize);
@@ -42,8 +41,22 @@ router.get("/approved/:id", async (req, res, _next) => {
       {
         model: models.GeneralUser, as: "Site_Manager",
       },
+      // {
+      //   model: models.Items, as: "Item_No_Items_Purchase_Order_Items_Qties",
+      // },
       {
-        model: models.Items, as: "Item_No_Items_Purchase_Order_Items_Qties",
+        model: models.Purchase_Order_Items_Qty, as: 'Purchase_Order_Items_Qties',
+        where: {
+          isPublished: 0,
+        },
+        include:[
+          {
+            model: models.Quota_Request, as: "Quota_Requests",
+          },
+          {
+            model: models.Items, as: "Item_No_Item",
+          }
+        ]
       }
     ],
   }).then((data) => {
@@ -64,6 +77,7 @@ router.post("/request-quota", async (req, res, _next) => {
     });
 
     if (isExist == null) {
+
       const quota = models.Quota_Request.build({
         P_Order_Id: req.body.order,
         Item_No: req.body.item,
@@ -71,6 +85,13 @@ router.post("/request-quota", async (req, res, _next) => {
         Closing_Date: req.body.closing_date,
         Procument_Staff_ID: req.body.userID,
       });
+
+      await models.Purchase_Order_Items_Qty.update(
+          {isPublished: true},
+          {where: {
+              P_Order_Id: req.body.order,
+              Item_No: req.body.item
+            }});
 
       await quota.save().then((quota) => {
         res.json({state: 201, Quota: quota});
@@ -126,6 +147,28 @@ router.post("/request/approve", async (req, res, _next) => {
   }
 });
 
+
+//Reject supplier request
+router.put("/request/reject", async (req, res, _next) => {
+
+try {
+  await models.Supplier_Apply_Quota_Request.update(
+      {status: 'rejected'},
+      {
+        where: {
+          Request_Id: req.body.request_Id,
+          Supplier_ID: req.body.supplier,
+        }
+      });
+     res.json({ state: 200, message: 'Request rejected' });
+}
+catch (e) {
+  res.json({ errors: e });
+}
+
+
+});
+
 //Get all supplier requests for one quota request
 router.get("/supplier-request/:pid/:iid", async (req, res, _next) => {
 
@@ -140,6 +183,7 @@ router.get("/supplier-request/:pid/:iid", async (req, res, _next) => {
     models.Supplier_Apply_Quota_Request.findAll({
       where: {
         Request_Id:qid,
+        status:'panding'
       },
       include: [
         {
@@ -160,22 +204,26 @@ router.get("/quota-request/:pid/:iid", async (req, res, _next) => {
     where: {
       P_Order_Id: req.params.pid,
       Item_No: req.params.iid
-    },
+    }
   }).then((data) => {
     res.json({ state: 200, Request: data });
   });
 });
 
 //Get all quota requests
-router.get('/quota-request', async (req, res, _next) => {
+router.get('/quota-requests', async (req, res, _next) => {
 
     await models.Quota_Request.findAll({
-        include: [{
-            model:models.Purchase_Order_Items_Qty, as: 'Item_No_Purchase_Order_Items_Qty',
-        }],
+        // include: [{
+        //     model:models.Purchase_Order_Items_Qty, as: 'P_Order',
+        //   // include: [
+        //   //   {
+        //   //     model: models.Items, as: 'Item_No_Item'
+        //   //   }
+        //   // ]
+        // }]
     }).then( data => {
-
-        res.json({id :data});
+        res.json({quotas :data});
     })
 
 });
@@ -185,6 +233,7 @@ router.get("/completed-orders", async (req, res, _next) => {
   await models.Shipping_Order_Items_Qty.findAll({
     where: {
       payment_status: 'pending',
+      Remaining_Qty: 0,
     },
     include: [
       {
@@ -215,11 +264,25 @@ router.get("/completed-orders/:sid/:iid", async (req, res, _next) => {
   });
 });
 
+//Get all placed orders
+router.get("/placed-orders", async (req, res, _next) => {
+  await models.Shipping_Order_Items_Qty.findAll({
+    include: [
+      {
+        model: models.Items,
+        as: "Item_No_Item",
+      },
+    ],
+  }).then((data) => {
+    res.json({ Orders: data });
+  });
+});
+
 //Get all paid orders
-router.get("/completed-orders", async (req, res, _next) => {
+router.get("/paid-orders", async (req, res, _next) => {
     await models.Shipping_Order_Items_Qty.findAll({
       where: {
-        paymentStatus: "completed",
+        payment_status: "completed",
       },
       include: [
         {
@@ -228,7 +291,7 @@ router.get("/completed-orders", async (req, res, _next) => {
         },
       ],
     }).then((data) => {
-      res.json({ CompletedOrders: data });
+      res.json({ paidOrders: data });
     });
   });
 
@@ -244,7 +307,7 @@ router.put("/make-payment/:sid/:iid", async (req, res, _next) => {
       },
     }
   ).then((data) => {
-    res.json({ payment: data });
+    res.json({ state:200, payment: data });
   });
 });
 
