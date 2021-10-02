@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectPlainTextFileTypeManager">
+    <file url="file://$PROJECT_DIR$/csse-backend/models/GeneralUser.js" />
+    <file url="file://$PROJECT_DIR$/csse-backend/models/Goods_Recipt.js" />
+    <file url="file://$PROJECT_DIR$/csse-backend/models/Goods_Recipt_Order_Items_Qty.js" />
+    <file url="file://$PROJECT_DIR$/csse-backend/models/init-models.js" />
+    <file url="file://$PROJECT_DIR$/csse-backend/models/Invoice.js" />
+    <file url="file://$PROJECT_DIR$/csse-backend/models/Item_Supplier.js" />
+    <file url="file://$PROJECT_DIR$/csse-backend/models/Item_Supplier_Supplying_Items.js" />
+    <file url="file://$PROJECT_DIR$/csse-backend/models/Items.js" />
+    <file url="file://$PROJECT_DIR$/csse-backend/models/Payment.js" />
+    <file url="file://$PROJECT_DIR$/csse-backend/models/Purchase_Order.js" />
+    <file url="file://$PROJECT_DIR$/csse-backend/models/Purchase_Order_Items_Qty.js" />
+    <file url="file://$PROJECT_DIR$/csse-backend/models/Quota_Request.js" />
+    <file url="file://$PROJECT_DIR$/csse-backend/models/Shipping_Order.js" />
+    <file url="file://$PROJECT_DIR$/csse-backend/models/Shipping_Order_Items_Qty.js" />
+    <file url="file://$PROJECT_DIR$/csse-backend/models/Site.js" />
+    <file url="file://$PROJECT_DIR$/csse-backend/models/Supplier_Apply_Quota_Request.js" />
+  </component>
+</project>
