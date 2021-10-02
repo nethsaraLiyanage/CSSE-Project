@@ -9,10 +9,7 @@ class OrderList extends StatefulWidget {
 }
 
 class _OrderListState extends State<OrderList> {
-  var currentIndex = 3;
-  PersistentTabController _controller;
 
-  _controller = PersistentTabController(initialIndex: 0);
 
   @override
   Widget build(BuildContext context) {
