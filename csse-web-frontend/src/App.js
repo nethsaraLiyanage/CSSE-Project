@@ -8,6 +8,10 @@ import AppliedOrders from './components/SupplierComponents/AppliedOrders';
 import CompletedOrders from './components/AccountingStaffComponents/CompletedOrders';
 import PaymentPage from './components/AccountingStaffComponents/PaymentPage';
 import PaidOrders from './components/AccountingStaffComponents/PaidOrders';
+import LMlogin from './components/LineManager/LMlogin';
+import LineManagerDash from './components/LineManager/LineManagerDash';
+
+import "./assets/style.css";
 import "antd/dist/antd.css";
 
 function App() {
@@ -15,6 +19,12 @@ function App() {
     <Router>
       <div>
         <Switch>
+        <Route exact path="/lmlogin">
+          <LMlogin/>
+        </Route>
+        <Route exact path="/LineManager">
+          <LineManagerDash/>
+        </Route>
         <Route exact path="/approved-requisition">
           <ApprovedRequisition/>
         </Route>
