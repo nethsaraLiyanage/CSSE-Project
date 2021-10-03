@@ -129,7 +129,9 @@ class _OrderListState extends State<OrderList> {
                                   textColor: Colors.white,
                                   //height: 60.0,
                                   color: Colors.cyan,
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    //Navigator.push(context, MaterialPageRoute(builder: (context) => Logs))
+                                  },
                                   child: Column(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [

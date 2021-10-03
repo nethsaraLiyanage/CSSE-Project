@@ -26,6 +26,7 @@ class MyApp extends StatelessWidget {
         '/orderlist': (context) => OrderList(),
         '/requisition': (context) => Requisition(),
         '/order': (context) => Order(),
+        //'/log': (context) => Log(),
       },
     );
   }

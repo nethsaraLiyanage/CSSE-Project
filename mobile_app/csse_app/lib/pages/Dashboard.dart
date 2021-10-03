@@ -5,6 +5,7 @@ import 'dart:collection';
 
 import 'package:csse_app/models/UserModel.dart';
 import 'package:flutter/material.dart';
+import 'package:material_dialogs/material_dialogs.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Dashboard extends StatefulWidget {
@@ -57,7 +58,7 @@ class _DashboardState extends State<Dashboard> {
                               flex: 1,
                               child: CircleAvatar(
                                 backgroundColor: Colors.blue[900],
-                                child: Text(userFet!["username"].toString()),
+                                child: Text(userFet["username"].toString()),
                               ))
                         ],
                       ),
@@ -89,8 +90,10 @@ class _DashboardState extends State<Dashboard> {
                               width: 200,
                               child: Card(
                                 child: new InkWell(
-                                  onTap: () {
-                                    print("tapped");
+                                  onTap: () =>{
+                                    if(userFet["type"].toString() != "Delivery Manager"){
+                                        Dialogs.bottomMaterialDialog(context: context, title: "You can't access this page!", lottieBuilder: Lottie.network('https://assets5.lottiefiles.com/packages/lf20_yw3nyrsv.json'))
+                                    }
                                   },
                                   child: Column(
                                     children: [
@@ -219,8 +222,8 @@ class _DashboardState extends State<Dashboard> {
                               width: 200,
                               child: Card(
                                 child: new InkWell(
-                                  onTap: () {
-                                    print("tapped");
+                                  onTap: () =>{
+                                   Navigator.pushNamed(context, '/orderlist')
                                   },
                                   child: Column(
                                     children: [
