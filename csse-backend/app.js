@@ -16,6 +16,7 @@ const health = require('./health');
 const test = require('./test');
 const UserRoute = require('./routes/UserRoute');
 const RequisitionRoute = require('./routes/RequisitionRoute');
+const LoginRoutes = require('./routes/LoginRoutes');
 const LineManagerRoutes = require('./routes/LineManagerRoutes');
 const ItemRoutes = require('./routes/ItemRoutes');
 
@@ -30,6 +31,7 @@ app.use(cors())
 app.use('/health', health);
 app.use('/user', UserRoute);
 app.use('/requisition', RequisitionRoute);
+app.use('/auth', LoginRoutes);
 app.use('/lineManager', LineManagerRoutes);
 app.use('/item', ItemRoutes);
 

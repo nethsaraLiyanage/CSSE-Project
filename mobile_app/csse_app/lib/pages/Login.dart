@@ -1,8 +1,15 @@
 // ignore_for_file: prefer_const_constructors_in_immutables
 
+import 'dart:convert';
+import 'dart:io';
+
+import 'package:csse_app/models/UserModel.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
+import 'package:http/http.dart' as http;
+import 'package:material_dialogs/material_dialogs.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Login extends StatefulWidget {
   Login({Key? key}) : super(key: key);
@@ -11,7 +18,33 @@ class Login extends StatefulWidget {
   _LoginState createState() => _LoginState();
 }
 
+Future<UserModel?> GetUser(String email, String password) async {
+  final String apiUrl = "http://192.168.1.100:8090/auth";
+  final bodyData = jsonEncode({"email": email, "password": password});
+
+  final response = await http.post(Uri.parse(apiUrl),
+      body: bodyData,
+      headers: {HttpHeaders.contentTypeHeader: 'application/json'});
+
+  debugPrint(response.body);
+
+  if (response.statusCode == 200) {
+    final String responseString = response.body;
+
+    return userModelFromJson(responseString);
+  } else {
+    return null;
+  }
+}
+
 class _LoginState extends State<Login> {
+  //text controllers
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passswordController = TextEditingController();
+
+  //global variables
+  late UserModel _user;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -44,6 +77,7 @@ class _LoginState extends State<Login> {
                 ),
                 SizedBox(height: 10),
                 TextField(
+                  controller: _emailController,
                   cursorColor: Colors.black,
                   style: TextStyle(color: Colors.blueGrey),
                   decoration: InputDecoration(
@@ -73,6 +107,7 @@ class _LoginState extends State<Login> {
                 ),
                 SizedBox(height: 10),
                 TextField(
+                  controller: _passswordController,
                   obscureText: true,
                   cursorColor: Colors.black,
                   style: TextStyle(color: Colors.blueGrey),
@@ -110,8 +145,47 @@ class _LoginState extends State<Login> {
                                 RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(18.0),
                                     side: BorderSide(color: Colors.blue)))),
-                        onPressed: () =>
-                            {Navigator.pushNamed(context, '/dash')},
+                        onPressed: () async {
+                          Dialogs.bottomMaterialDialog(
+                              context: context,
+                              title: 'Verify in progress',
+                              lottieBuilder: Lottie.network(
+                                  'https://assets1.lottiefiles.com/datafiles/bEYvzB8QfV3EM9a/data.json'));
+
+                          final String _emailInput = _emailController.text;
+                          final String _passwordInput =
+                              _passswordController.text;
+
+                          debugPrint(_passwordInput);
+
+                          final UserModel? user =
+                              await GetUser(_emailInput, _passwordInput);
+                          ;
+
+                          if (user != null) {
+                            //sleep(Duration(seconds: 2));
+                            //save to local disk
+                            final prefs = await SharedPreferences.getInstance();
+                            prefs.setString('username', user.name);
+                            prefs.setString('type', user.type);
+                            prefs.setString('email', user.email);
+                            prefs.setString('password', user.password);
+                            prefs.setInt('id', user.userId);
+                            Navigator.pop(context, false);
+                            Navigator.pushNamed(context, '/dash');
+                          } else {
+                            Dialogs.bottomMaterialDialog(
+                                context: context,
+                                title: 'Error! user not found',
+                                lottieBuilder: Lottie.network(
+                                    'https://assets5.lottiefiles.com/packages/lf20_yw3nyrsv.json'));
+                            sleep(Duration(seconds: 5));
+                            Future.delayed(const Duration(seconds: 3), () {
+                              Navigator.pop(context, false);
+                              Navigator.pushNamed(context, '/login');
+                            });
+                          }
+                        },
                       ),
                     )
                   ],
