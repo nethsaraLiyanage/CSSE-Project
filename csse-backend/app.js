@@ -16,6 +16,7 @@ const health = require('./health');
 const test = require('./test');
 const UserRoute = require('./routes/UserRoute');
 const RequisitionRoute = require('./routes/RequisitionRoute');
+const LoginRoutes = require('./routes/LoginRoutes');
 
 const PORT = process.env.PORT || 8080;
 
@@ -27,6 +28,7 @@ app.use(cors())
 app.use('/health', health);
 app.use('/user', UserRoute);
 app.use('/requisition', RequisitionRoute);
+app.use('/auth', LoginRoutes);
 
 //stablish MSSQL Db connection
 dbOperations.getConnection;
