@@ -3,6 +3,8 @@ import { Layout, Menu, Breadcrumb } from 'antd';
 import AllRequesitions from './AllRequesitions';
 import Logo1 from './../../assets/images/logo1.png'
 import PastRequesitions from './PastRequesitions';
+import AllItems from './AllItems';
+
 const { Header, Content, Footer } = Layout;
 
 class LineManagerDash extends Component {
@@ -20,7 +22,7 @@ class LineManagerDash extends Component {
     }else if(this.state.selectedItem === '2'){
         component = <PastRequesitions/>
     }else if(this.state.selectedItem === '3'){
-        component = <AllRequesitions/>
+        component = <AllItems/>
     }else if(this.state.selectedItem === '4'){
         // component = <MakeAppointments/>
     }
@@ -36,7 +38,7 @@ class LineManagerDash extends Component {
                 <Menu.Item><img src={Logo1} alt="" width={"130px"} /></Menu.Item>
                 <Menu.Item key="1" onClick={() => {this.setState({ selectedItem: '1'})}}>All Requesitions</Menu.Item>
                 <Menu.Item key="2" onClick={() => {this.setState({ selectedItem: '2'})}}>Past Requesitions</Menu.Item>
-                <Menu.Item key="3" onClick={() => {this.setState({ selectedItem: '3'})}}>All Requesitions</Menu.Item>
+                <Menu.Item key="3" onClick={() => {this.setState({ selectedItem: '3'})}}>All Items</Menu.Item>
               {/* {new Array(5).fill(null).map((_, index) => {
                 const key = index + 1;
                 return <Menu.Item key={key}>{`nav ${key}`}</Menu.Item>;
@@ -52,7 +54,7 @@ class LineManagerDash extends Component {
             {component}
 
           </Content>
-          <Footer style={{ textAlign: 'center' }}>Ant Design ©2018 Created by Ant UED</Footer>
+          <Footer style={{ textAlign: 'center' }}>Designed @2021 Created by REG_WE_03</Footer>
         </Layout>
       </>
     )

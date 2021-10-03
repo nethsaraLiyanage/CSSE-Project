@@ -9,11 +9,6 @@ class OrderList extends StatefulWidget {
 }
 
 class _OrderListState extends State<OrderList> {
-  var currentIndex = 3;
-  PersistentTabController _controller;
-
-  _controller = PersistentTabController(initialIndex: 0);
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -159,22 +154,22 @@ class _OrderListState extends State<OrderList> {
           ),
         ),
       ),
-bottomNavigationBar: BottomNavigationBar(
-    items: const <BottomNavigationBarItem>[
-      BottomNavigationBarItem(
-        icon: Icon(Icons.call),
-        label: 'Calls',
+      bottomNavigationBar: BottomNavigationBar(
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Icon(Icons.book_outlined),
+            label: 'My Orders',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.book_rounded),
+            label: 'Orders',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.manage_accounts),
+            label: 'Profile',
+          ),
+        ],
       ),
-      BottomNavigationBarItem(
-        icon: Icon(Icons.camera),
-        label: 'Camera',
-      ),
-      BottomNavigationBarItem(
-        icon: Icon(Icons.chat),
-        label: 'Chats',
-      ),
-    ],
-  ),
     );
   }
 }
