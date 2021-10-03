@@ -2,7 +2,11 @@ const express = require('express')
 const app = express()
 var Request = require('tedious').Request
 var TYPES = require('tedious').TYPES;
-const sql = require('mssql')
+const sql = require('mssql');
+var GeneralUser = require("./models/GeneralUser");
+var DataTypes = require('sequelize/lib/data-types');
+var sequelize = require('./sequelize');
+var Goods_Recipt = require("./models/Goods_Recipt")(sequelize, DataTypes);
 require('dotenv/config');
 const dboperations = require('./dboperations')
 
@@ -11,21 +15,12 @@ const router = express.Router({});
 //retrive data
 router.get('/', async (req, res, _next) => {
 
-    const request = new sql.Request()
-    request.stream = true;
-    request.query('select * from dbo.GeneralUser;')
-
-
-    const data = []; 
-
-    request.on('row',row =>{
-        data.push(row)
-        console.log(row);
+    Goods_Recipt.findAll().then( data => {
+        res.json({Users:data});
     })
+  
 
-    request.on('done', () =>{
-        res.send(data)
-    })
+  
 
 });
 

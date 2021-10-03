@@ -108,11 +108,11 @@ class _RequisitionState extends State<Requisition> {
                         decoration: new InputDecoration(
                           contentPadding: EdgeInsets.fromLTRB(30.0, 0.0, 0.0, 10.0),
                           focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(color: Colors.blue, width: 3.0),
+                              borderSide: BorderSide(color: Colors.blue, width: 2.0),
                               borderRadius: BorderRadius.circular(20)
                           ),
                           enabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(color: Colors.blue, width: 3.0),
+                              borderSide: BorderSide(color: Colors.blue, width: 2.0),
                               borderRadius: BorderRadius.circular(20)
                           ),
                         ),
@@ -156,11 +156,11 @@ class _RequisitionState extends State<Requisition> {
                         decoration: new InputDecoration(
                           contentPadding: EdgeInsets.fromLTRB(30.0, 0.0, 0.0, 10.0),
                           focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(color: Colors.blue, width: 3.0),
+                              borderSide: BorderSide(color: Colors.blue, width: 2.0),
                               borderRadius: BorderRadius.circular(20)
                           ),
                           enabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(color: Colors.blue, width: 3.0),
+                              borderSide: BorderSide(color: Colors.blue, width: 2.0),
                               borderRadius: BorderRadius.circular(20)
                           ),
                         ),
@@ -205,12 +205,12 @@ class _RequisitionState extends State<Requisition> {
                         decoration: new InputDecoration(
                           contentPadding: EdgeInsets.fromLTRB(30.0, 0.0, 0.0, 10.0),
                           focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(color: Colors.blue, width: 3.0),
+                              borderSide: BorderSide(color: Colors.blue, width: 2.0),
                               borderRadius: BorderRadius.circular(20)
                           ),
 
                           enabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(color: Colors.blue, width: 3.0),
+                              borderSide: BorderSide(color: Colors.blue, width: 2.0),
                               borderRadius: BorderRadius.circular(20)
                           ),
                           suffixIcon: IconButton(
