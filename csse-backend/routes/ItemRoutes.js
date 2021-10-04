@@ -13,4 +13,27 @@ router.get("/allItems", async (req, res, _next) => {
     });
 });
 
+//Get all paid orders
+router.get("/ItemsBySite/:id", async (req, res, _next) => {
+  await models.Site.findOne({
+    where: {
+      Site_Id: req.params.id,
+    },
+    include: [
+      {
+        model: models.Inventory,
+        as: "Inventories",
+        include:[
+          {
+            model: models.Items,
+            as: "Item_No_Item"
+          }
+        ]
+      },
+    ],
+  }).then((data) => {
+    res.json({ data: data });
+  });
+});
+
 module.exports = router;

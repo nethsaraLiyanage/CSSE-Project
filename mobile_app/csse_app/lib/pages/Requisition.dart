@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'dart:developer';
 
 import 'package:csse_app/models/ItemsModel.dart';
+import 'package:csse_app/models/PurchaseOrderItemsQtyModel.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -41,7 +42,20 @@ class _RequisitionState extends State<Requisition> {
   }
 
   DateTime _requestDateDate = DateTime.now();
-  String? _currentSelectedValue = "";
+  int? _currentSelectedValue;
+  List<PurchaseOrderItemsQtyModel> selectedItemsList = [];
+  int? _itemsQuantity = 0;
+
+  void createSelectList(ItemsModel selectedItem){
+    int item_Id = selectedItem.itemNo;
+    int quantity = _itemsQuantity!;
+    int price = quantity * selectedItem.estimatedUnitPrice;
+    PurchaseOrderItemsQtyModel processedItem = PurchaseOrderItemsQtyModel(itemNo: item_Id, itemName: selectedItem.itemName,quantity: quantity, Price: price);
+    setState(() {
+      selectedItemsList.add(processedItem);
+    });
+    debugPrint(selectedItemsList.length.toString());
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -52,7 +66,7 @@ class _RequisitionState extends State<Requisition> {
           List<ItemsModel>? itrmsList = snapshot.data;
           debugPrint(itrmsList.toString());
           if(snapshot.hasData){
-            _currentSelectedValue = itrmsList![0].itemName;
+            _currentSelectedValue = itrmsList![0].itemNo;
             return (Padding(
               padding: const EdgeInsets.fromLTRB(20.0, 30.0, 20.0, 50.0),
               child: SingleChildScrollView(
@@ -284,76 +298,43 @@ class _RequisitionState extends State<Requisition> {
                                           fontWeight: FontWeight.bold))),
 
                             ],
-                            rows: [
-                              DataRow(
+                            rows: selectedItemsList.map((e) {
+                              return DataRow(
                                 cells: [
                                   DataCell(
                                       Padding(
                                         padding: EdgeInsets.fromLTRB(0.0, 10.0, 0.0, 10.0),
                                         child: Column(
-                                          children: [
-                                            Row(
-                                              children: [
-                                                Expanded(
-                                                    child: Container(
-                                                      child: Text('HR258', style: TextStyle(fontSize: 12)),
-                                                    )
-                                                )
-                                              ],
-                                            ),
-                                            Row(
-                                              children: [
-                                                Expanded(
-                                                    child: Container(
-                                                      child: Text('Sample Item  111', style: TextStyle(fontSize: 15 , fontWeight: FontWeight.bold)),
-                                                    )
-                                                )
-                                              ],
-                                            )
-                                          ],
+                                            children: [
+                                              Row(
+                                                children: [
+                                                  Expanded(
+                                                      child: Container(
+                                                        child: Text(e.itemNo.toString(), style: TextStyle(fontSize: 12)),
+                                                      )
+                                                  )
+                                                ],
+                                              ),
+                                              Row(
+                                                children: [
+                                                  Expanded(
+                                                      child: Container(
+                                                        child: Text(e.itemName, style: TextStyle(fontSize: 15 , fontWeight: FontWeight.bold)),
+                                                      )
+                                                  )
+                                                ],
+                                              )
+                                            ]
                                         ),
                                       )
                                   ),
-                                  DataCell(Text('100', style: TextStyle(fontSize: 14))),
-                                  DataCell(Text('13256.00', style: TextStyle(fontSize: 14))),
+                                  DataCell(Text(e.quantity.toString(), style: TextStyle(fontSize: 14))),
+                                  DataCell(Text(e.Price.toString(), style: TextStyle(fontSize: 14))),
                                 ],
 
-                              ),
-                              DataRow(
-                                cells: [
-                                  DataCell(
-                                      Padding(
-                                        padding: EdgeInsets.fromLTRB(0.0, 10.0, 0.0, 10.0),
-                                        child: Column(
-                                          children: [
-                                            Row(
-                                              children: [
-                                                Expanded(
-                                                    child: Container(
-                                                      child: Text('HR258', style: TextStyle(fontSize: 12)),
-                                                    )
-                                                )
-                                              ],
-                                            ),
-                                            Row(
-                                              children: [
-                                                Expanded(
-                                                    child: Container(
-                                                      child: Text('Sample Item  111', style: TextStyle(fontSize: 15 , fontWeight: FontWeight.bold)),
-                                                    )
-                                                )
-                                              ],
-                                            )
-                                          ],
-                                        ),
-                                      )
-                                  ),
-                                  DataCell(Text('100', style: TextStyle(fontSize: 14))),
-                                  DataCell(Text('13256.00', style: TextStyle(fontSize: 14))),
-                                ],
+                              );
 
-                              ),
-                            ],
+                            }).toList() ,
                             dataRowHeight: 55,
                             columnSpacing: 40.0
                         ),
@@ -382,6 +363,7 @@ class _RequisitionState extends State<Requisition> {
                                     builder: (context) {
                                       return StatefulBuilder(
                                           builder: (context , setState){
+                                            List<ItemsModel> currentItem;
                                             return Dialog(
                                               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
                                               elevation: 16,
@@ -446,12 +428,12 @@ class _RequisitionState extends State<Requisition> {
                                                                         ),
                                                                       ),
                                                                       child: DropdownButtonHideUnderline(
-                                                                        child: DropdownButton<String>(
+                                                                        child: DropdownButton(
                                                                           isExpanded: true,
                                                                           //hint: Text("Status"),
                                                                           value: _currentSelectedValue,
                                                                           elevation: 6,
-                                                                          onChanged: (String? newValue) {
+                                                                          onChanged: (int? newValue) {
                                                                             setState(() {
                                                                               _currentSelectedValue = newValue!;
                                                                             });
@@ -465,7 +447,7 @@ class _RequisitionState extends State<Requisition> {
                                                                                     itrmsList[index].itemName
                                                                                 ),
                                                                               ),
-                                                                              value: itrmsList[index].itemName
+                                                                              value: itrmsList[index].itemNo
                                                                             ),
                                                                           ),
                                                                         ),
@@ -553,7 +535,8 @@ class _RequisitionState extends State<Requisition> {
                                                                                   borderRadius: BorderRadius.circular(18.0),
                                                                                   side: BorderSide(color: Colors.green)))),
                                                                       onPressed: () => {
-                                                                        Navigator.of(context, rootNavigator: true).pop()
+                                                                        currentItem = itrmsList.where((f) => f.itemNo == _currentSelectedValue).toList(),
+                                                                        createSelectList(currentItem[0])
                                                                       },
                                                                     ),
                                                                   )
