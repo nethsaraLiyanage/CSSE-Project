@@ -18,6 +18,7 @@ import "./assets/style.css";
 import "antd/dist/antd.css";
 import ProcumentStaffDashboard from "./components/StaffComponents/ProcumentStaffDashboard";
 import AccountingDashboard from "./components/AccountingStaffComponents/AccountingDashboard";
+import SupplierDash from './components/SupplierComponents/SupplierDash';
 
 
 
@@ -38,14 +39,8 @@ function App() {
         <Route exact path="/place-order/:poid/:iid">
           <ViewSupplierRequests/>
         </Route>
-        <Route exact path="/supplier-view-all">
-          <SupplierViewRequisitions/>
-        </Route>
-        <Route exact path="/supplier-orders">
-          <SupplierOrders/>
-        </Route>
-        <Route exact path="/applied-orders">
-          <AppliedOrders/>
+        <Route exact path="/supplier">
+          <SupplierDash/>
         </Route>
         <Route exact path="/completed-orders">
           <CompletedOrders/>

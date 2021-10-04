@@ -1,13 +1,15 @@
 import React, { Component } from 'react'
 import { Layout, Menu, Breadcrumb } from 'antd';
-import AllRequesitions from './AllRequesitions';
-import Logo1 from './../../assets/images/logo1.png'
-import PastRequesitions from './PastRequesitions';
-import AllItems from './AllItems';
+import Logo1 from './../../assets/images/logo1.png';
+
+
+import SupplierViewRequisitions from './SupplierViewRequisitions';
+import SupplierOrders from './SupplierOrders';
+import AppliedOrders from './AppliedOrders';
 
 const { Header, Content, Footer } = Layout;
 
-class LineManagerDash extends Component {
+class SupplierDash extends Component {
     constructor(props){
         super(props);
         this.state = {
@@ -18,11 +20,11 @@ class LineManagerDash extends Component {
   render() {
     var component
     if(this.state.selectedItem === '1'){
-        component = <AllRequesitions/>
+        component = <SupplierViewRequisitions/>
     }else if(this.state.selectedItem === '2'){
-        component = <PastRequesitions/>
+        component = <AppliedOrders/>
     }else if(this.state.selectedItem === '3'){
-        component = <AllItems/>
+        component = <SupplierOrders/>
     }else if(this.state.selectedItem === '4'){
         // component = <MakeAppointments/>
     }
@@ -36,9 +38,9 @@ class LineManagerDash extends Component {
             </div> */}
             <Menu theme="dark" mode="horizontal" defaultSelectedKeys={this.state.selectedItem}>
                 <Menu.Item><img src={Logo1} alt="" width={"130px"} /></Menu.Item>
-                <Menu.Item key="1" onClick={() => {this.setState({ selectedItem: '1'})}}>All Requesitions</Menu.Item>
-                <Menu.Item key="2" onClick={() => {this.setState({ selectedItem: '2'})}}>Past Requesitions</Menu.Item>
-                <Menu.Item key="3" onClick={() => {this.setState({ selectedItem: '3'})}}>All Items</Menu.Item>
+                <Menu.Item key="1" onClick={() => {this.setState({ selectedItem: '1'})}}>Requesitions</Menu.Item>
+                <Menu.Item key="2" onClick={() => {this.setState({ selectedItem: '2'})}}>Applied Requesitions</Menu.Item>
+                <Menu.Item key="3" onClick={() => {this.setState({ selectedItem: '3'})}}>Completed Requesitions</Menu.Item>
               {/* {new Array(5).fill(null).map((_, index) => {
                 const key = index + 1;
                 return <Menu.Item key={key}>{`nav ${key}`}</Menu.Item>;
@@ -48,7 +50,7 @@ class LineManagerDash extends Component {
           <Content style={{ padding: '0 50px' }}>
             <Breadcrumb style={{ margin: '16px 0' }}>
               <Breadcrumb.Item>Home</Breadcrumb.Item>
-              <Breadcrumb.Item>Line Manager</Breadcrumb.Item>
+              <Breadcrumb.Item>Supplier</Breadcrumb.Item>
             </Breadcrumb>
             
             {component}
@@ -61,4 +63,4 @@ class LineManagerDash extends Component {
   }
 }
 
-export default LineManagerDash
+export default SupplierDash
