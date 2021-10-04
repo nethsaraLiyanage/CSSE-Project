@@ -16,6 +16,8 @@ import ViewQuotaRequests from "./components/StaffComponents/ViewQuotaRequests";
 
 import "./assets/style.css";
 import "antd/dist/antd.css";
+import ProcumentStaffDashboard from "./components/StaffComponents/ProcumentStaffDashboard";
+import AccountingDashboard from "./components/AccountingStaffComponents/AccountingDashboard";
 import SupplierDash from './components/SupplierComponents/SupplierDash';
 
 
@@ -57,6 +59,12 @@ function App() {
           </Route>
           <Route exact path="/all-quotas">
             <ViewQuotaRequests/>
+          </Route>
+          <Route exact path="/proc-dashboard">
+            <ProcumentStaffDashboard/>
+          </Route>
+          <Route exact path="/acc-dashboard">
+            <AccountingDashboard/>
           </Route>
         </Switch>
       </div>
