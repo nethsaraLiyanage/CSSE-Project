@@ -38,9 +38,9 @@ class SupplierDash extends Component {
             </div> */}
             <Menu theme="dark" mode="horizontal" defaultSelectedKeys={this.state.selectedItem}>
                 <Menu.Item><img src={Logo1} alt="" width={"130px"} /></Menu.Item>
-                <Menu.Item key="1" onClick={() => {this.setState({ selectedItem: '1'})}}>Requesitions</Menu.Item>
-                <Menu.Item key="2" onClick={() => {this.setState({ selectedItem: '2'})}}>Applied Requesitions</Menu.Item>
-                <Menu.Item key="3" onClick={() => {this.setState({ selectedItem: '3'})}}>Completed Requesitions</Menu.Item>
+                <Menu.Item key="1" onClick={() => {this.setState({ selectedItem: '1'})}}>Requests</Menu.Item>
+                <Menu.Item key="2" onClick={() => {this.setState({ selectedItem: '2'})}}>Applied Requests</Menu.Item>
+                <Menu.Item key="3" onClick={() => {this.setState({ selectedItem: '3'})}}>Completed Requests</Menu.Item>
               {/* {new Array(5).fill(null).map((_, index) => {
                 const key = index + 1;
                 return <Menu.Item key={key}>{`nav ${key}`}</Menu.Item>;
