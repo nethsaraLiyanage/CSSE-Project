@@ -20,6 +20,8 @@ class Requisition extends StatefulWidget {
 
 class _RequisitionState extends State<Requisition> {
   final TextEditingController _Datecontroller = TextEditingController();
+  final siteController = TextEditingController();
+  final managerController = TextEditingController();
 
 
 
@@ -45,6 +47,7 @@ class _RequisitionState extends State<Requisition> {
   int? _currentSelectedValue;
   List<PurchaseOrderItemsQtyModel> selectedItemsList = [];
   int? _itemsQuantity = 0;
+  int? _totalPrice = 0;
 
   void createSelectList(ItemsModel selectedItem){
     int item_Id = selectedItem.itemNo;
@@ -54,6 +57,7 @@ class _RequisitionState extends State<Requisition> {
     setState(() {
       selectedItemsList.add(processedItem);
     });
+    _totalPrice = (_totalPrice! + price)!;
     debugPrint(selectedItemsList.length.toString());
   }
 
@@ -133,6 +137,7 @@ class _RequisitionState extends State<Requisition> {
                           child: Padding(
                             padding: EdgeInsets.fromLTRB(10.0, 5.0, 10.0, 5.0),
                             child: TextFormField(
+                              controller: siteController,
                               // The validator receives the text that the user has entered.
                               validator: (value) {
                                 if (value == null || value.isEmpty) {
@@ -181,6 +186,7 @@ class _RequisitionState extends State<Requisition> {
                           child: Padding(
                             padding: EdgeInsets.fromLTRB(10.0, 5.0, 10.0, 5.0),
                             child: TextFormField(
+                              controller: managerController,
                               // The validator receives the text that the user has entered.
                               validator: (value) {
                                 if (value == null || value.isEmpty) {
@@ -212,7 +218,7 @@ class _RequisitionState extends State<Requisition> {
                                 child: Padding(
                                   padding: EdgeInsets.fromLTRB(10.0, 0.0, 10.0, 0.0),
                                   child: Text(
-                                    'Request Date',
+                                    'Required Date',
                                     style: TextStyle(
                                         fontWeight: FontWeight.bold,
                                         fontSize: 18,
