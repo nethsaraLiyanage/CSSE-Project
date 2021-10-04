@@ -4,6 +4,7 @@ const initModels = require("../models/init-models");
 const models = initModels(sequelize);
 const moment = require('moment');
 require("dotenv/config");
+const _ = require('lodash');
 
 const router = express.Router({});
 
@@ -358,6 +359,18 @@ router.put("/make-payment/:sid/:iid", async (req, res, _next) => {
   ).then((data) => {
     res.json({ state:200, payment: data });
   });
+});
+
+
+router.get("/my-request/:id", async (req, res, _next) => {
+  try{
+  const [results, metadata] = await sequelize.query("SELECT * FROM Quota_Request FULL OUTER JOIN Supplier_Apply_Quota_Request ON Quota_Request.Quota_Request_Id = Supplier_Apply_Quota_Request.Request_Id FULL OUTER JOIN Items ON Quota_Request.Item_No = Items.Item_No  where Supplier_Apply_Quota_Request.Supplier_ID = "+req.params.id+"" );
+  res.json({ state:200, quotas: results });
+  }
+  catch(e){
+    res.json({ state:400, quotas: e });
+  }
+
 });
 
 module.exports = router;
