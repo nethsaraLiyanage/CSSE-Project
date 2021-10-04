@@ -1,10 +1,19 @@
-import React, { useEffect, useState } from "react";
+import React, { Component } from 'react'
 import { Space, Input, Button, Card, Avatar, List, Tag } from "antd";
 import { Row, Col } from 'antd';
 
-const AppliedOrders = () => {
-  return (
-    <div>
+
+class AppliedOrders extends Component {
+  constructor(props){
+    super(props);
+    this.state = {
+        
+    }
+  }
+
+  render() {
+    return (
+      <div>
       <Card title="Applied Orders">
         <Row>
           <Col span={12} style={{paddingRight:'20px'}}>
@@ -43,7 +52,8 @@ const AppliedOrders = () => {
         
       </Card>
     </div>
-  );
-};
+    )
+  }
+}
 
-export default AppliedOrders;
+export default AppliedOrders
