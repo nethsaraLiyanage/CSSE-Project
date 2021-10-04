@@ -19,6 +19,7 @@ import "antd/dist/antd.css";
 import ProcumentStaffDashboard from "./components/StaffComponents/ProcumentStaffDashboard";
 import AccountingDashboard from "./components/AccountingStaffComponents/AccountingDashboard";
 import SupplierDash from './components/SupplierComponents/SupplierDash';
+import Login from './components/Login';
 
 
 
@@ -65,6 +66,9 @@ function App() {
           </Route>
           <Route exact path="/acc-dashboard">
             <AccountingDashboard/>
+          </Route>
+          <Route exact path="/">
+            <Login/>
           </Route>
         </Switch>
       </div>
