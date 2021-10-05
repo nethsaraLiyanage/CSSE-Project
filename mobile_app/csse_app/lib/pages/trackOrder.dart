@@ -1,20 +1,24 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:csse_app/api/http_all_purchase_models.dart';
 import 'package:csse_app/api/http_purchase_models.dart';
 import 'package:csse_app/models/purchaseOrderModel.dart';
+import 'package:csse_app/pages/Logs.dart';
 import 'package:flutter/material.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
-class OrderList extends StatefulWidget {
-  final Future<List<PurchaseOrderModel?>> list;
-  final String? id;
-  const OrderList({Key? key, required this.list, required this.id}) : super(key: key);
+class TrackOrder extends StatefulWidget {
+  final String id;
+  const TrackOrder({
+    Key? key,
+    required this.id,
+  }) : super(key: key);
 
   @override
-  State<OrderList> createState() => _OrderListState();
+  State<TrackOrder> createState() => _TrackOrderState();
 }
 
 getUser() async {
@@ -30,31 +34,15 @@ getUser() async {
   return id;
 }
 
-Future<List<PurchaseOrderModel?>> getMyOrders() async {
-  final String apiUrl = "http://192.168.1.4:8090/order/pending/7";
-
-  final response = await http.get(Uri.parse(apiUrl));
-
-  debugPrint(response.body);
-
-  if (response.statusCode == 200) {
-    final String responseString = response.body;
-
-    return purchaseOrderModelFromJson(responseString);
-  } else {
-    throw "cant get products";
-  }
-}
-
-class _OrderListState extends State<OrderList> {
-  final HttpServiceOrder _httpServiceOrder = new HttpServiceOrder();
+class _TrackOrderState extends State<TrackOrder> {
+  final HttpAllPOrders _httpAllPOrdeers = new HttpAllPOrders();
 
   @override
   Widget build(BuildContext context) {
-    debugPrint(widget.list.toString());
+    // debugPrint(widget.list.toString());
     return Scaffold(
       body: FutureBuilder(
-        future: _httpServiceOrder.getProduct(widget.id.toString()),
+        future: _httpAllPOrdeers.getProduct(),
         builder: (BuildContext context,
             AsyncSnapshot<List<PurchaseOrderModel>> snapshot) {
           if (snapshot.hasData) {
@@ -79,12 +67,12 @@ class _OrderListState extends State<OrderList> {
                               flex: 1,
                               child: CircleAvatar(
                                 backgroundColor: Colors.blue[900],
-                                child:  Text(widget.id.toString()),
+                                child: Text(widget.id),
                               ))
                         ],
                       ),
                       Text(
-                        'My Orders',
+                        'Track Orders',
                         style: TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: 30,
@@ -170,7 +158,19 @@ class _OrderListState extends State<OrderList> {
                                         children: [
                                           Expanded(
                                             flex: 1,
-                                            child: Text(e.pOrderId.toString()),
+                                            child: Column(
+                                              children: [
+                                                Text(
+                                                  'order id',
+                                                  textAlign: TextAlign.left,
+                                                  style: TextStyle(
+                                                      color: Colors.grey,
+                                                      fontSize: 10),
+                                                ),
+                                                space5(),
+                                                Text(e.pOrderId.toString()),
+                                              ],
+                                            ),
                                           ),
                                           Expanded(
                                               flex: 2,
@@ -201,7 +201,13 @@ class _OrderListState extends State<OrderList> {
                                                     //height: 60.0,
                                                     color: Colors.cyan,
                                                     onPressed: () {
-                                                      //Navigator.push(context, MaterialPageRoute(builder: (context) => Logs))
+                                                      Navigator.push(
+                                                          context,
+                                                          MaterialPageRoute(
+                                                              builder: (context) =>
+                                                                  Logs(
+                                                                      pId: e
+                                                                          .pOrderId, uid : widget.id)));
                                                     },
                                                     child: Column(
                                                       mainAxisAlignment:
