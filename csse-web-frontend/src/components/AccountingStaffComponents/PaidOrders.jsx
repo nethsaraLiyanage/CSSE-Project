@@ -8,9 +8,7 @@ const CompletedOrders = () => {
 
   useEffect(() => {
 
-    // if(username === null){
-    //   history.push("/login")
-    // }
+
 
     axios.get("http://localhost:8090/requisition/paid-orders").then((res) => {
       setOrders(res.data.paidOrders);
@@ -27,10 +25,8 @@ const CompletedOrders = () => {
         type="inner"
         title={order.Item_No_Item.Item_Name}
       >
-        <p>Site: Malabe</p>
-        <p>Order date: 2021-11-11</p>
-        <p>Supplier : </p>
-        <p>Order value : Rs 40 000.00</p>
+        <p>Quantity: {order.Total_Qty}</p>
+        <p>Order value : </p>
 
       </Card>
      ))}
