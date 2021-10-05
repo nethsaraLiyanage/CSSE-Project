@@ -19,7 +19,7 @@ class Login extends StatefulWidget {
 }
 
 Future<UserModel?> GetUser(String email, String password) async {
-  final String apiUrl = "http://192.168.1.100:8090/auth";
+  final String apiUrl = "http://192.168.1.4:8090/auth";
   final bodyData = jsonEncode({"email": email, "password": password});
 
   final response = await http.post(Uri.parse(apiUrl),

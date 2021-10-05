@@ -5,6 +5,7 @@ import 'package:csse_app/pages/OrderList.dart';
 import 'package:csse_app/pages/Requisition.dart';
 import 'package:csse_app/pages/Order.dart';
 import 'package:csse_app/pages/Logs.dart';
+import 'package:csse_app/pages/trackOrder.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -19,15 +20,15 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      initialRoute: '/requisition',
+      initialRoute: '/login',
       routes: {
         '/login': (context) => Login(),
         '/dash' : (context) => Dashboard(),
         '/inventory' : (context) => Inventory(),
-        '/orderlist' : (context) => OrderList(),
+        //'/orderlist' : (context) => OrderList(),
         '/requisition' : (context) => Requisition(),
         '/order' : (context) => Order(),
-        '/logs' : (context) => Logs(),
+        //'/trackOrder' : (context) => TrackOrder()
         },
     );
   }
