@@ -20,6 +20,8 @@ const LoginRoutes = require('./routes/LoginRoutes');
 const LineManagerRoutes = require('./routes/LineManagerRoutes');
 const ItemRoutes = require('./routes/ItemRoutes');
 const OrderRoutes = require('./routes/OrderRoutes');
+const SupplierRoutes = require('./routes/SupplierRoutes');
+const SiteRoutes = require('./routes/SiteRoute');
 
 
 const PORT = process.env.PORT || 8080;
@@ -36,6 +38,8 @@ app.use('/auth', LoginRoutes);
 app.use('/lineManager', LineManagerRoutes);
 app.use('/item', ItemRoutes);
 app.use('/order', OrderRoutes);
+app.use('/supplier', SupplierRoutes);
+app.use('/site', SiteRoutes);
 
 //stablish MSSQL Db connection
 dbOperations.getConnection;

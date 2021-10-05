@@ -2,7 +2,9 @@ const express = require("express");
 const sequelize = require("../sequelize");
 const initModels = require("../models/init-models");
 const models = initModels(sequelize);
+const moment = require('moment');
 require("dotenv/config");
+const _ = require('lodash');
 
 const router = express.Router({});
 
@@ -10,7 +12,7 @@ const router = express.Router({});
 router.get("/approved", async (req, res, _next) => {
   models.Purchase_Order.findAll({
     where: {
-      status: "Pending",
+      status: "Approved",
     },
     include:[
       {
@@ -214,14 +216,14 @@ router.get("/quota-request/:pid/:iid", async (req, res, _next) => {
 router.get('/quota-requests', async (req, res, _next) => {
 
     await models.Quota_Request.findAll({
-        // include: [{
-        //     model:models.Purchase_Order_Items_Qty, as: 'P_Order',
-        //   // include: [
-        //   //   {
-        //   //     model: models.Items, as: 'Item_No_Item'
-        //   //   }
-        //   // ]
-        // }]
+        include: [{
+            model:models.Purchase_Order_Items_Qty, as: 'P_Order',
+          include: [
+            {
+              model: models.Items, as: 'Item_No_Item'
+            }
+          ]
+        }]
     }).then( data => {
         res.json({quotas :data});
     })
@@ -234,34 +236,58 @@ router.get("/completed-orders", async (req, res, _next) => {
     where: {
       payment_status: 'pending',
       Remaining_Qty: 0,
+
     },
     include: [
       {
         model: models.Items,
         as: "Item_No_Item",
-      },
+
+      }
     ],
   }).then((data) => {
-    res.json({ CompletedOrders: data });
+
+      res.json({ Order: data});
   });
 });
 
 //Get one order
 router.get("/completed-orders/:sid/:iid", async (req, res, _next) => {
-  await models.Shipping_Order_Items_Qty.findOne({
+
+  await models.Goods_Recipt.findOne({
     where: {
       S_Order_Id: req.params.sid,
-      Item_No: req.params.iid,
     },
     include: [
       {
+        model: models.Item_Supplier,
+        as: "Item_Supplier",
+      },
+      {
         model: models.Items,
-        as: "Item_No_Item",
+        as: "Item_No_Items",
       },
     ],
   }).then((data) => {
-    res.json({ Order: data });
+
+    const reqId =  data.get({ plain: true }).Item_Supplier.Request_Id;
+
+     models.Supplier_Apply_Quota_Request.findOne({
+       where: {
+         Request_Id: reqId,
+       },
+       include: [
+         {
+           model: models.GeneralUser,
+           as: "Supplier",
+         },
+       ],
+     }).then((other) => {
+       res.json({ Order: data, other:other });
+     })
+
   });
+
 });
 
 //Get all placed orders
@@ -298,6 +324,30 @@ router.get("/paid-orders", async (req, res, _next) => {
 
 //make payment for one completed order
 router.put("/make-payment/:sid/:iid", async (req, res, _next) => {
+
+  console.log(moment().format());
+  const paymentSlip = await models.Payment.build({
+    Date: sequelize.fn('GETDATE'),
+    Amount: req.body.amount,
+    Recipt_No: req.body.recipt_ID,
+    Account_Staff_Id: req.body.user_ID,
+  });
+
+  await paymentSlip.save().then((data) => {
+    const pid =  data.get({ plain: true }).Payment_Id;
+
+    const Invoice =  models.Invoice.build({
+      Issued_Date: sequelize.fn('GETDATE'),
+      Approver_Name: null,
+      Amount: req.body.amount,
+      Invoice_Url: null,
+      Payment_Id: pid,
+    });
+
+    Invoice.save();
+
+  });
+
   await models.Shipping_Order_Items_Qty.update(
     { payment_status: "completed" },
     {
@@ -309,6 +359,18 @@ router.put("/make-payment/:sid/:iid", async (req, res, _next) => {
   ).then((data) => {
     res.json({ state:200, payment: data });
   });
+});
+
+
+router.get("/my-request/:id", async (req, res, _next) => {
+  try{
+  const [results, metadata] = await sequelize.query("SELECT * FROM Quota_Request FULL OUTER JOIN Supplier_Apply_Quota_Request ON Quota_Request.Quota_Request_Id = Supplier_Apply_Quota_Request.Request_Id FULL OUTER JOIN Items ON Quota_Request.Item_No = Items.Item_No  where Supplier_Apply_Quota_Request.Supplier_ID = "+req.params.id+"" );
+  res.json({ state:200, quotas: results });
+  }
+  catch(e){
+    res.json({ state:400, quotas: e });
+  }
+
 });
 
 module.exports = router;

@@ -1,11 +1,41 @@
 import React, { useEffect, useState } from "react";
-import { Space, Input, Button, Card, Avatar, List, Tag } from "antd";
+import { Space, Input, Button, Card, Table, List, Tag } from "antd";
 import axios from "axios";
 import { Link } from "react-router-dom";
 
 const CompletedOrders = () => {
 
   const [orders,setOrders] = useState([]);
+
+  const columns = [
+    {
+      title: 'S_Order_Id',
+      dataIndex: 'S_Order_Id',
+      key: 'S_Order_Id',
+    },
+    {
+      title: 'Total_Qty',
+      dataIndex: 'Total_Qty',
+      key: 'Total_Qty',
+    },
+    {
+      title: 'Item',
+      dataIndex: 'Item',
+      key: 'Item',
+    },
+    {
+      title: 'Action',
+      key: 'action',
+      render: (text, record) => (
+        <Space size="middle">
+           <Link to={`payment/${record.S_Order_Id}/${record.itemId}`}>
+          <Button>Pay</Button>
+          </Link>
+        </Space>
+      ),
+    },
+  ];
+
 
   useEffect(() => {
 
@@ -14,7 +44,18 @@ const CompletedOrders = () => {
     // }
 
     axios.get("http://localhost:8090/requisition/completed-orders").then((res) => {
-      setOrders(res.data.CompletedOrders);
+      const orders = res.data.Order;
+      const data = [];
+      orders.forEach(order => {
+        const input = {
+          S_Order_Id: order.S_Order_Id,
+          Total_Qty: order.Total_Qty,
+          Item: order.Item_No_Item.Item_Name,
+          itemId: order.Item_No
+        }
+        data.push(input);
+      });
+      setOrders(data);
     }).catch((err) => {
       console.log(err);
     })
@@ -23,25 +64,7 @@ const CompletedOrders = () => {
 
   return (
     <div>
-      <Card title="Completed Orders">
-      {orders.map((order) => (
-        <Card
-          type="inner"
-          title={order.Item_No_Item.Item_Name}
-          extra={
-            <Link to={`payment/${order.S_Order_Id}/${order.Item_No}`}>
-          <Button type="primary">Proceed to payment</Button>
-          </Link>
-        }
-        >
-          <p>Site: Malabe</p>
-          <p>Order date: 2021-11-11</p>
-          <p>Supplier : </p>
-          <p>Order value : Rs 40 000.00</p>
-
-        </Card>
-       ))}
-      </Card>
+      <Table columns={columns} dataSource={orders} />
     </div>
   );
 };

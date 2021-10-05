@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Form, Input, Button, Card, Avatar, List, Tag } from "antd";
+import {Form, Input, Button, Card, Avatar, List, Tag, Space, Table} from "antd";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import {useHistory,useParams} from "react-router-dom";
@@ -11,14 +11,45 @@ const ApprovedRequisition = () => {
 
   const [requests,setRequests] = useState([]);
 
+  const columns = [
+    {
+      title: 'Site',
+      dataIndex: 'Site',
+      key: 'Site',
+    },
+    {
+      title: 'Manager',
+      dataIndex: 'manager',
+      key: 'manager',
+    },
+    {
+      title: 'Action',
+      key: 'action',
+      render: (text, record) => (
+          <Space size="middle">
+            <Link to={`view-requisition/${record.pid}`}>
+              <Button>View</Button>
+            </Link>
+          </Space>
+      ),
+    },
+  ];
+
   useEffect(() => {
 
-    // if(username === null){
-    //   history.push("/login")
-    // }
-
     axios.get("http://localhost:8090/requisition/approved").then((res) => {
-      setRequests(res.data.Goods_Recipts);
+      const orders = res.data.Goods_Recipts;
+      const data = [];
+      orders.forEach(order => {
+        const input = {
+          Site: order.Site.Site_Name,
+          manager: order.Site_Manager.Name,
+          pid: order.P_Order_Id
+        }
+        data.push(input);
+      });
+      setRequests(data);
+      // setRequests(res.data.Goods_Recipts);
     }).catch((err) => {
       console.log(err);
     })
@@ -76,22 +107,7 @@ const ApprovedRequisition = () => {
 
   return (
     <div>
-
-      {requests.map((request) => (
-      <Card title="Requisition 001"
-      extra={[ <Link to ={`view-requisition/${request.P_Order_Id}`}>
-      <a key="list-loadmore-more">View</a></Link>]}>
-        <p>Site: {request.Site.Site_Name}</p>
-        <p>Site manager:  {request.Site_Manager.Name}</p>
-        {/* {request.Item_No_Items_Purchase_Order_Items_Qties.map((item) => (
-        <Card type="inner" title={item.Item_Name + ' X ' + item.Purchase_Order_Items_Qty.Total_Qty}
-          extra={<Button onClick={ e => makeQuotaRequest(item.Item_No,request.P_Order_Id,null,null)} type="primary">Publish</Button>}
-        >
-            <Button onClick={ e => viewSuppliers(request.P_Order_Id,item.Item_No)} type="secondary">View Suppliers</Button>
-        </Card>
-        ))} */}
-      </Card>
-      ))}
+      <Table columns={columns} dataSource={requests} />
     </div>
   );
 };
