@@ -7,9 +7,26 @@ class SupplierOrders extends Component {
   constructor(props){
     super(props);
     this.state = {
-        visible:false
+      supplierId:'6',
+      myQuotas:[],
+      selectedItem:{},
+      sendMore:0,
+      visible:false
     }
   }
+
+  fetchMyQuotas = () =>{
+    fetch('http://localhost:8090/supplier/approvedApplyies/'+this.state.supplierId).then(res => res.json()).then(data =>{
+      this.setState({myQuotas: data})
+    //   console.log(data)
+    }).catch(err =>{
+      console.log(err);
+    })
+  }
+
+componentDidMount(){
+    this.fetchMyQuotas()
+}
 
   showModal = () => {
     this.setState({visible:true})
@@ -29,13 +46,24 @@ class SupplierOrders extends Component {
       <Card title="My Orders">
 
         <Row>
-          <Col span={12} style={{paddingRight:'20px'}}>
-            <Card style={{ marginTop: 16 }} type="inner" title="Cement">
-              {" "}
-              <p>Site: Malabe</p>
+
+        {this.state.myQuotas.map(item => {
+          const status = 'Completed';
+          let sendMore =  item.Item_No - item.quantity;
+          if(sendMore == 0){
+            status = 'Completed';
+          }
+          return(
+            <Col span={12} style={{paddingRight:'20px'}}>
+            <Card 
+              style={{ marginTop: 16 }} 
+              type="inner" 
+              title={item.Item_No +" units from "+ item.Item_Name}
+            >
+              <p>Deliverd as {item.No_Of_Deliveries} unit(s).</p>
               <Space>
                 Status:
-                <Tag color="#87d068">Completed</Tag>
+                <Tag color="#87d068">{status}</Tag>
               </Space>
               <br />
               <Space style={{ marginTop: 16 }}>
@@ -58,34 +86,8 @@ class SupplierOrders extends Component {
             </Card>
           </Col>
 
-          <Col span={12} style={{paddingRight:'20px'}}>
-            <Card style={{ marginTop: 16 }} type="inner" title="Cement">
-              {" "}
-              <p>Site: Malabe</p>
-              <Space>
-                Status:
-                <Tag color="#87d068">Completed</Tag>
-              </Space>
-              <br />
-              <Space style={{ marginTop: 16 }}>
-                Payment:
-                <Tag color="#108ee9">Completed</Tag>
-                <Button type="secondary" onClick={this.showModal}>
-                  view
-                </Button>
-                <Modal
-                  title="Payment"
-                  visible={this.state.visible}
-                  onOk={this.handleOk}
-                  onCancel={this.handleCancel}
-                >
-                  <p>Item: 100 metal bars</p>
-                  <p>Status: Completed</p>
-                  <p>Payment: Rs 40000.00</p>
-                </Modal>
-              </Space>
-            </Card>
-          </Col>
+          )
+        })}
         </Row>
         
       </Card>
