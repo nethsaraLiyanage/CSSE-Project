@@ -97,7 +97,7 @@ handleCancel = () => {
                     </Row>
                     <Row style={{marginTop:5}}>
                         <Col span={6}><Text strong>You have to send </Text></Col>
-                        <Col><p><Tag color="#87d068">{sendMore}</Tag> more Unit(s).</p></Col>
+                        <Col><p><Tag color="#87d068">{sendMore}</Tag> more set(s) of units.</p></Col>
                     </Row>
                     <br />
                     <Text strong>Additional Informations you provided: </Text>
