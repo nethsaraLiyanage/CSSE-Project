@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:intl/intl.dart';
 import 'package:http/http.dart' as http;
+import 'package:material_dialogs/material_dialogs.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Logs extends StatefulWidget {
@@ -643,6 +644,14 @@ class _LogsState extends State<Logs> {
                                                             ),
                                                             onPressed:
                                                                 () async {
+                                                              Dialogs.bottomMaterialDialog(
+                                                                  context:
+                                                                      context,
+                                                                  title:
+                                                                      'Verify in progress',
+                                                                  lottieBuilder:
+                                                                      Lottie.network(
+                                                                          'https://assets1.lottiefiles.com/datafiles/bEYvzB8QfV3EM9a/data.json'));
                                                               final String
                                                                   apiUrl =
                                                                   "http://192.168.1.4:8090/order/accept/recipt";
@@ -653,7 +662,7 @@ class _LogsState extends State<Logs> {
                                                                     widget.uid,
                                                                 "Recipt_No":
                                                                     e.reciptNo,
-                                                                "item_list" :
+                                                                "item_list":
                                                                     e.itemList
                                                               });
                                                               final response =
@@ -678,6 +687,8 @@ class _LogsState extends State<Logs> {
                                                                     responseString =
                                                                     response
                                                                         .body;
+                                                                Navigator.pop(
+                                                                    context);
                                                               } else {
                                                                 return null;
                                                               }

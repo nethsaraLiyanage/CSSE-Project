@@ -2,7 +2,9 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:csse_app/api/http_purchase_models.dart';
+import 'package:csse_app/models/allGoodRecipts.dart';
 import 'package:csse_app/models/purchaseOrderModel.dart';
+import 'package:csse_app/pages/Logs.dart';
 import 'package:flutter/material.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:http/http.dart' as http;
@@ -11,7 +13,10 @@ import 'package:shared_preferences/shared_preferences.dart';
 class OrderList extends StatefulWidget {
   final Future<List<PurchaseOrderModel?>> list;
   final String? id;
-  const OrderList({Key? key, required this.list, required this.id}) : super(key: key);
+  final String? username;
+  const OrderList(
+      {Key? key, required this.list, required this.id, required this.username})
+      : super(key: key);
 
   @override
   State<OrderList> createState() => _OrderListState();
@@ -49,6 +54,7 @@ Future<List<PurchaseOrderModel?>> getMyOrders() async {
 class _OrderListState extends State<OrderList> {
   final HttpServiceOrder _httpServiceOrder = new HttpServiceOrder();
 
+
   @override
   Widget build(BuildContext context) {
     debugPrint(widget.list.toString());
@@ -79,7 +85,7 @@ class _OrderListState extends State<OrderList> {
                               flex: 1,
                               child: CircleAvatar(
                                 backgroundColor: Colors.blue[900],
-                                child:  Text(widget.id.toString()),
+                                child: Text(widget.username.toString()),
                               ))
                         ],
                       ),
@@ -200,8 +206,15 @@ class _OrderListState extends State<OrderList> {
                                                     textColor: Colors.white,
                                                     //height: 60.0,
                                                     color: Colors.cyan,
-                                                    onPressed: () {
-                                                      //Navigator.push(context, MaterialPageRoute(builder: (context) => Logs))
+                                                    onPressed: () async {
+                                                      Navigator.push(
+                                                          context,
+                                                          MaterialPageRoute(
+                                                              builder: (context) => Logs(
+                                                                  pId: e
+                                                                      .pOrderId,
+                                                                  uid: widget.id
+                                                                      .toString())));
                                                     },
                                                     child: Column(
                                                       mainAxisAlignment:

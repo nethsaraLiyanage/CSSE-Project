@@ -222,7 +222,7 @@ class _DashboardState extends State<Dashboard> {
                                         context,
                                         MaterialPageRoute(
                                             builder: (context) =>
-                                                OrderList(list: orders, id : userFet["id"])));
+                                                OrderList(list: orders, id : userFet["id"], username : userFet["username"])));
                                   },
                                   child: Column(
                                     children: [
