@@ -157,11 +157,7 @@ router.post("/request/approve", async (req, res, _next) => {
       await shipping_order_qty.save();
 
       res.json({ state: 201, message: "Order Placed Successfully" });
-    }).then((res) => {
-      console.log(res);
-    }).catch((err) => {
-      console.log(err);
-  });
+    });
   } catch (e) {
     res.json({ errors: e });
   }
