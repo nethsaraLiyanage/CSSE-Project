@@ -172,7 +172,7 @@ class _LoginState extends State<Login> {
                             prefs.setString('password', user.password);
                             prefs.setInt('id', user.userId);
                             Navigator.pop(context, false);
-                            Navigator.pushNamed(context, '/dash');
+                            Navigator.pushNamed(context, '/selectSite');
                           } else {
                             Dialogs.bottomMaterialDialog(
                                 context: context,

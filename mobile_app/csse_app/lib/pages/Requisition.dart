@@ -22,6 +22,7 @@ class _RequisitionState extends State<Requisition> {
   final TextEditingController _Datecontroller = TextEditingController();
   final siteController = TextEditingController();
   final managerController = TextEditingController();
+  final quantityController = TextEditingController();
 
 
 
@@ -51,7 +52,8 @@ class _RequisitionState extends State<Requisition> {
 
   void createSelectList(ItemsModel selectedItem){
     int item_Id = selectedItem.itemNo;
-    int quantity = _itemsQuantity!;
+    debugPrint(quantityController.text);
+    int quantity = int.parse(quantityController.text );
     int price = quantity * selectedItem.estimatedUnitPrice;
     PurchaseOrderItemsQtyModel processedItem = PurchaseOrderItemsQtyModel(itemNo: item_Id, itemName: selectedItem.itemName,quantity: quantity, Price: price);
     setState(() {
@@ -490,6 +492,7 @@ class _RequisitionState extends State<Requisition> {
                                                             child: Padding(
                                                               padding: EdgeInsets.fromLTRB(10.0, 5.0, 10.0, 5.0),
                                                               child: TextFormField(
+                                                                controller : quantityController,
                                                                 // The validator receives the text that the user has entered.
                                                                 validator: (value) {
                                                                   if (value == null || value.isEmpty) {
@@ -615,7 +618,7 @@ class _RequisitionState extends State<Requisition> {
                           child: Container(
                             child: Center(
                               child: Text(
-                                'Total : 2586458.00',
+                                _totalPrice.toString() + '.00 Rs',
                                 style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                     fontSize: 25,
