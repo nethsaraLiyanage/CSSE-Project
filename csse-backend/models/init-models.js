@@ -50,6 +50,8 @@ function initModels(sequelize) {
   GeneralUser.hasMany(Purchase_Order, { as: "Purchase_Orders", foreignKey: "Site_Manager_Id"});
   Quota_Request.belongsTo(GeneralUser, { as: "Procument_Staff", foreignKey: "Procument_Staff_ID"});
   GeneralUser.hasMany(Quota_Request, { as: "Quota_Requests", foreignKey: "Procument_Staff_ID"});
+  Shipping_Order.belongsTo(GeneralUser, { as: "Supplier", foreignKey: "Supplier_Id"});
+  GeneralUser.hasMany(Shipping_Order, { as: "Shipping_Orders", foreignKey: "Supplier_Id"});
   Site.belongsTo(GeneralUser, { as: "Site_Manager", foreignKey: "Site_Manager_Id"});
   GeneralUser.hasMany(Site, { as: "Sites", foreignKey: "Site_Manager_Id"});
   Supplier_Apply_Quota_Request.belongsTo(GeneralUser, { as: "Supplier", foreignKey: "Supplier_ID"});

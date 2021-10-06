@@ -16,10 +16,9 @@ import ViewQuotaRequests from "./components/StaffComponents/ViewQuotaRequests";
 
 import "./assets/style.css";
 import "antd/dist/antd.css";
-import ProcumentStaffDashboard from "./components/StaffComponents/ProcumentStaffDashboard";
-import AccountingDashboard from "./components/AccountingStaffComponents/AccountingDashboard";
 import SupplierDash from './components/SupplierComponents/SupplierDash';
 import Login from './components/Login';
+import ViewPaidOrder from './components/AccountingStaffComponents/ViewPaidOrder';
 
 
 
@@ -61,14 +60,11 @@ function App() {
           <Route exact path="/all-quotas">
             <ViewQuotaRequests/>
           </Route>
-          <Route exact path="/proc-dashboard">
-            <ProcumentStaffDashboard/>
-          </Route>
-          <Route exact path="/acc-dashboard">
-            <AccountingDashboard/>
-          </Route>
           <Route exact path="/">
             <Login/>
+          </Route>
+          <Route exact path="/paid-orders/:sid/:iid">
+            <ViewPaidOrder/>
           </Route>
         </Switch>
       </div>

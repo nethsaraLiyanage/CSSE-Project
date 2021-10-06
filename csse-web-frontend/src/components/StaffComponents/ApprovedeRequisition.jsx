@@ -3,6 +3,7 @@ import {Form, Input, Button, Card, Avatar, List, Tag, Space, Table} from "antd";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import {useHistory,useParams} from "react-router-dom";
+import StaffHeader from "../Common/StaffHeader";
 
 
 const ApprovedRequisition = () => {
@@ -107,6 +108,7 @@ const ApprovedRequisition = () => {
 
   return (
     <div>
+      <StaffHeader/>
       <Table columns={columns} dataSource={requests} />
     </div>
   );
