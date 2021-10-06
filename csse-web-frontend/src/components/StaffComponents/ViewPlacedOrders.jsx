@@ -3,6 +3,7 @@ import { Space, Input, Button, Card, Avatar, List, Tag } from "antd";
 import axios from "axios";
 import {useHistory,useParams} from "react-router-dom";
 import moment from "moment";
+import StaffHeader from "../Common/StaffHeader";
 
 const ViewPlacedOrders = () => {
 
@@ -24,6 +25,7 @@ const ViewPlacedOrders = () => {
 
     return (
         <div>
+            <StaffHeader/>
             {orders.map((order) => (
                 <Card
                     type="inner"

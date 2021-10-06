@@ -131,7 +131,12 @@ router.post("/request/approve", async (req, res, _next) => {
       Request_Id: req.body.request_Id,
       Supplier_ID: req.body.supplier,
     });
-    await supplier_item.save();
+
+    await supplier_item.save().then((res) => {
+      console.log(res);
+    }).catch((err) => {
+      console.log(err);
+  });
 
     const shipping_order = models.Shipping_Order.build({
       Ordered_Date: req.body.order_date,
@@ -139,7 +144,7 @@ router.post("/request/approve", async (req, res, _next) => {
       Required_Date: req.body.requested_date,
       Sub_Total: req.body.total,
       P_Order_Id: req.body.p_order,
-      Supplier_Id: Supplier_ID
+      Supplier_Id: req.body.supplier
     });
 
     await shipping_order.save().then(async (data) => {
@@ -152,7 +157,11 @@ router.post("/request/approve", async (req, res, _next) => {
       await shipping_order_qty.save();
 
       res.json({ state: 201, message: "Order Placed Successfully" });
-    });
+    }).then((res) => {
+      console.log(res);
+    }).catch((err) => {
+      console.log(err);
+  });
   } catch (e) {
     res.json({ errors: e });
   }
