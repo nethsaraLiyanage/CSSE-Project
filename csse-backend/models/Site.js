@@ -26,6 +26,10 @@ module.exports = function(sequelize, DataTypes) {
         model: 'GeneralUser',
         key: 'User_ID'
       }
+    },
+    siteImage: {
+      type: DataTypes.TEXT,
+      allowNull: true
     }
   }, {
     sequelize,

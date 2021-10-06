@@ -303,18 +303,43 @@ router.get("/placed-orders", async (req, res, _next) => {
 
 //Get all paid orders
 router.get("/paid-orders", async (req, res, _next) => {
-  await models.Shipping_Order_Items_Qty.findAll({
+  const [results, metadata] = await sequelize.query(
+    "SELECT * FROM Shipping_Order_Items_Qty s FULL OUTER JOIN Goods_Recipt ON s.S_Order_Id = Goods_Recipt.S_Order_Id FULL OUTER JOIN Item_Supplier ON Item_Supplier.Item_Supplier_Id = Goods_Recipt.Item_Supplier_Id FULL OUTER JOIN GeneralUser ON GeneralUser.User_ID = Item_Supplier.Supplier_ID "
+  );
+  res.json({ state: 200, orders: results });
+});
+
+//Get one paid order
+router.get("/paid-orders/:sid/:iid", async (req, res, _next) => {
+  await models.Shipping_Order_Items_Qty.findOne({
     where: {
-      payment_status: "completed",
+      S_Order_Id: req.params.sid,
+      Item_No: req.params.iid
     },
     include: [
+      {
+        model: models.Shipping_Order,
+        as: "S_Order",
+        include: [
+          {
+            model: models.Purchase_Order,
+            as: "P_Order",
+            include: [
+              {
+                model: models.Site,
+                as: "Site",
+              }
+            ],
+          }
+        ],
+      },
       {
         model: models.Items,
         as: "Item_No_Item",
       },
     ],
   }).then((data) => {
-    res.json({ paidOrders: data });
+    res.json({ Order: data });
   });
 });
 

@@ -11,7 +11,7 @@ const CompletedOrders = () => {
 
 
     axios.get("http://localhost:8090/requisition/paid-orders").then((res) => {
-      setOrders(res.data.paidOrders);
+      setOrders(res.data.orders);
     }).catch((err) => {
       console.log(err);
     })
@@ -23,10 +23,10 @@ const CompletedOrders = () => {
     {orders.map((order) => (
       <Card
         type="inner"
-        title={order.Item_No_Item.Item_Name}
+        title={order.Name}
       >
-        <p>Quantity: {order.Total_Qty}</p>
-        <p>Order value : </p>
+        <p>Order ID: {order.S_Order_Id}</p>
+        <p>Payment Status : {order.payment_status} </p>
 
       </Card>
      ))}
