@@ -3,6 +3,7 @@ import { Form, Input, Button, Card, Avatar, List, Tag } from "antd";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import {useHistory,useParams} from "react-router-dom";
+import StaffHeader from "../Common/StaffHeader";
 
 
 const ViewQuotaRequest = () => {
@@ -33,7 +34,9 @@ const ViewQuotaRequest = () => {
 
     return (
         <div>
-            <Card title="Requisition 001">
+
+            <StaffHeader/>
+            <Card title="Requisition Details">
 
                 {quotas.map((quota) => (
                     <Card type="inner" title={quota.P_Order.Item_No_Item.Item_Name}

@@ -88,7 +88,7 @@ router.post("/request-quota", async (req, res, _next) => {
       const quota = models.Quota_Request.build({
         P_Order_Id: req.body.order,
         Item_No: req.body.item,
-        Start_Date: req.body.start_date,
+        Start_Date: sequelize.fn("GETDATE"),
         Closing_Date: req.body.closing_date,
         Procument_Staff_ID: req.body.userID,
       });
@@ -139,6 +139,7 @@ router.post("/request/approve", async (req, res, _next) => {
       Required_Date: req.body.requested_date,
       Sub_Total: req.body.total,
       P_Order_Id: req.body.p_order,
+      Supplier_Id: Supplier_ID
     });
 
     await shipping_order.save().then(async (data) => {
@@ -303,10 +304,29 @@ router.get("/placed-orders", async (req, res, _next) => {
 
 //Get all paid orders
 router.get("/paid-orders", async (req, res, _next) => {
-  const [results, metadata] = await sequelize.query(
-    "SELECT * FROM Shipping_Order_Items_Qty s FULL OUTER JOIN Goods_Recipt ON s.S_Order_Id = Goods_Recipt.S_Order_Id FULL OUTER JOIN Item_Supplier ON Item_Supplier.Item_Supplier_Id = Goods_Recipt.Item_Supplier_Id FULL OUTER JOIN GeneralUser ON GeneralUser.User_ID = Item_Supplier.Supplier_ID "
-  );
-  res.json({ state: 200, orders: results });
+  await models.Shipping_Order_Items_Qty.findAll({
+    where: {
+      payment_status: "completed",
+    },
+    include: [
+      {
+        model: models.Items,
+        as: "Item_No_Item",
+      },
+      {
+        model: models.Shipping_Order,
+        as: "S_Order",
+        include: [
+          {
+            model: models.GeneralUser,
+            as: "Supplier",
+          }
+        ],
+      },
+    ],
+  }).then((data) => {
+    res.json({ orders: data });
+  });
 });
 
 //Get one paid order
@@ -321,6 +341,10 @@ router.get("/paid-orders/:sid/:iid", async (req, res, _next) => {
         model: models.Shipping_Order,
         as: "S_Order",
         include: [
+          {
+            model: models.GeneralUser,
+            as: "Supplier",
+          },
           {
             model: models.Purchase_Order,
             as: "P_Order",

@@ -34,11 +34,11 @@ const Login = () => {
             }
             else if(res.data.status === 200 && userType == "Proccument Staff"){
                
-                history.push('/proc-dashboard');
+                history.push('/approved-requisition');
             }
             else if(res.data.status === 200 && userType == "Accounting Staff"){
                
-                history.push('/acc-dashboard');
+                history.push('/completed-orders');
             }
             else if(res.data.status === 200 && userType == "Supplier"){
                

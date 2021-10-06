@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { Space, Input, Button, Card, Avatar, List, Tag } from "antd";
+import { Input, Button, Card, Avatar, List, Tag } from "antd";
 import axios from "axios";
+import {Link, useHistory} from "react-router-dom";
 
 const CompletedOrders = () => {
 
@@ -23,10 +24,14 @@ const CompletedOrders = () => {
     {orders.map((order) => (
       <Card
         type="inner"
-        title={order.Name}
+        title={order.S_Order.Supplier.Name}
       >
         <p>Order ID: {order.S_Order_Id}</p>
         <p>Payment Status : {order.payment_status} </p>
+
+      <Link to = {`paid-orders/${order.S_Order_Id}/${order.Item_No}`}>
+        <Button  type="secondary">View</Button>
+        </Link>
 
       </Card>
      ))}

@@ -30,6 +30,14 @@ module.exports = function(sequelize, DataTypes) {
         model: 'Purchase_Order',
         key: 'P_Order_Id'
       }
+    },
+    Supplier_Id: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+      references: {
+        model: 'GeneralUser',
+        key: 'User_ID'
+      }
     }
   }, {
     sequelize,
