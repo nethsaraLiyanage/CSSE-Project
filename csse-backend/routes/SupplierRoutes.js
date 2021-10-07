@@ -28,7 +28,6 @@ router.get('/quota-requests', async (req, res, _next) => {
 router.get("/pending-quotas", async (req, res, _next) => {
   const [results, metadata] = await sequelize.query("SELECT * FROM Quota_Request WHERE P_Order_Id NOT IN  (SELECT P_Order_Id FROM Shipping_Order)");
   res.json({ state:200, quotas: results });
-
 });
 
 //Get all applied requests for a supplier
@@ -60,7 +59,7 @@ router.post("/supplierApply", async (req, res, _next) => {
       const supplier_apply = models.Supplier_Apply_Quota_Request.build({
         No_Of_Deliveries: req.body.No_Of_Deliveries,
         Additional_Description: req.body.Additional_Description,
-        quantity: 0,
+        quantity: req.body.quantity,
         request_price: req.body.request_price,
         Supplier_ID: req.body.supplier_ID,
         Request_Id: req.body.Request_Id,
@@ -77,5 +76,26 @@ router.post("/supplierApply", async (req, res, _next) => {
     res.json({errors: e});
   }
 });
+
+//Get all applied requests for a supplier which are approved
+// router.get('/approvedApplyies/:id', async (req, res, _next) => {
+
+//   await models.Shipping_Order.findAll({
+//     where: {
+//       Supplier_Id : req.params.id
+//     },
+//       include: [{
+//           model:models.Shipping_Order_Items_Qty, as: 'Shipping_Order_Items_Qties',
+//         include: [
+//           {
+//             model: models.Items, as: 'Item_No_Item'
+//           }
+//         ]
+//       }]
+//   }).then( data => {
+//       res.json(data);
+//   })
+
+// });
 
 module.exports = router;
