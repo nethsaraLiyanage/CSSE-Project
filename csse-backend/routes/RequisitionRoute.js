@@ -422,4 +422,54 @@ router.get("/my-request/:id", async (req, res, _next) => {
   }
 });
 
+//Approve supplier request
+router.post("/createRequisitions", async (req, res, _next) => {
+  console.log('Inside Create Requesition');
+  console.log('Req Date is : ' , moment(req.body.requiredDate).format('YYYYMMDD'))
+  try {
+
+    let paymentStatue = req.body.totalPrice >= 100000 ? "Pending" : "Approved";
+
+    const Purchase_Order = models.Purchase_Order.build({
+      Ordered_Date: sequelize.fn("GETDATE"),
+      Status: paymentStatue,
+      Required_Date: sequelize.fn("GETDATE"),
+      // moment(req.body.requiredDate).format('YYYY-MM-DD'),
+      Sub_Total: req.body.totalPrice,
+      Site_Id: req.body.selected_Site_Id,
+      Site_Manager_Id: req.body.managerId,
+    });
+    await Purchase_Order.save()
+    .then(async(data)=>{
+      let selectedItemsList = req.body.selectedItemsList;
+        if(selectedItemsList.length > 0){
+          selectedItemsList.map(async(requestionItem) => {
+            let Purchase_Order_Items_Qty = models.Purchase_Order_Items_Qty.build({
+              P_Order_Id: data.get({ plain: true }).P_Order_Id,
+              Item_No: requestionItem.Item_No,
+              Remaining_Qty: requestionItem.quantity,
+              Total_Qty: requestionItem.quantity
+            });
+            await Purchase_Order_Items_Qty.save()
+            .then(()=>{
+              console.log('Items Entry Created');
+            })
+            .catch((err) => {
+              console.log('Error in saving Items : ' , err);
+              res.json({status:400, error:err});
+            })
+          })
+          res.json({status:200});
+        }
+    })
+    .catch((err) => {
+      console.log('Error in saving Purchase Order : ' , err);
+      res.status = 400;
+      res.json({status:400, error:err});
+    })
+  } catch (err) {
+    res.json({ error: err });
+  }
+});
+
 module.exports = router;

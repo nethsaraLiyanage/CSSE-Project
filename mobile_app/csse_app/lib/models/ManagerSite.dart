@@ -67,6 +67,7 @@ class Site {
     required this.location,
     required this.address,
     required this.siteManagerId,
+    required this.siteImage,
   });
 
   int siteId;
@@ -74,6 +75,7 @@ class Site {
   String location;
   String address;
   int siteManagerId;
+  String siteImage;
 
   factory Site.fromJson(Map<String, dynamic> json) => Site(
     siteId: json["Site_Id"],
@@ -81,6 +83,7 @@ class Site {
     location: json["Location"],
     address: json["Address"],
     siteManagerId: json["Site_Manager_Id"],
+    siteImage: json["siteImage"],
   );
 
   Map<String, dynamic> toJson() => {
@@ -89,5 +92,6 @@ class Site {
     "Location": location,
     "Address": address,
     "Site_Manager_Id": siteManagerId,
+    "siteImage": siteImage,
   };
 }

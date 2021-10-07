@@ -10,6 +10,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 
 class SelectSite extends StatefulWidget {
@@ -24,7 +25,9 @@ class _SelectSiteState extends State<SelectSite> {
   final List<int> colorCodes = <int>[600, 500, 100];
 
   Future<ManagerSite> fetchItemsList() async {
-    final response = await http.get(Uri.parse('http://10.0.2.2:8090/site/getSiteByManagerId/8'));
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    int? id = prefs.getInt('id');
+    final response = await http.get(Uri.parse('http://10.0.2.2:8090/site/getSiteByManagerId/' + id.toString()));
 
     if (response.statusCode == 200) {
       final String responseString = response.body;
@@ -126,15 +129,19 @@ class _SelectSiteState extends State<SelectSite> {
                                           child: Card(
                                             child: InkWell(
                                               splashColor: Colors.blue.withAlpha(30),
-                                              onTap: () {
+                                              onTap: () async {
                                                 print('Card tapped.');
+                                                final prefs = await SharedPreferences.getInstance();
+                                                prefs.setInt('selected_Site_Id', managerSite.data[0].sites[index].siteId);
+                                                prefs.setString('selected_Site_Name', managerSite.data[0].sites[index].siteName.toString());
+                                                Navigator.pushNamed(context, '/dash');
                                               },
                                               child: Row(
                                                 children: [
                                                   Expanded(
                                                     flex: 1,
                                                       child: Container(
-                                                        child: Image.network('https://picsum.photos/250?image=9'),
+                                                        child: Image.network(managerSite.data[0].sites[index].siteImage.toString()),
                                                       )
                                                   ),
                                                   Expanded(
@@ -149,7 +156,7 @@ class _SelectSiteState extends State<SelectSite> {
                                                             Expanded(
                                                             child: Container(
                                                             child: Text(
-                                                              managerSite!.data[0].sites[index].siteName.toString(),
+                                                              managerSite.data[0].sites[index].siteName.toString(),
                                                               style: TextStyle(
                                                                   fontWeight: FontWeight.bold,
                                                                   fontSize: 20,
@@ -165,7 +172,7 @@ class _SelectSiteState extends State<SelectSite> {
                                                   Expanded(
                                                       child: Container(
                                                         child: Text(
-                                                            managerSite!.data[0].sites[index].location.toString(),
+                                                            managerSite.data[0].sites[index].location.toString(),
                                                           style: TextStyle(
                                                               fontWeight: FontWeight.bold,
                                                               fontSize: 18,
@@ -180,7 +187,7 @@ class _SelectSiteState extends State<SelectSite> {
                                                   Expanded(
                                                       child: Container(
                                                         child: Text(
-                                                          managerSite!.data[0].sites[index].address.toString(),
+                                                          managerSite.data[0].sites[index].address.toString(),
                                                           style: TextStyle(
                                                               fontSize: 15,
                                                               color: Colors.blueGrey),
