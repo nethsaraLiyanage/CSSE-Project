@@ -48,10 +48,12 @@ componentDidMount(){
         <Row>
 
         {this.state.myQuotas.map(item => {
-          const status = 'Completed';
+          let status = 'Pending';
+          let color = 'yellow'
           let sendMore =  item.Item_No - item.quantity;
           if(sendMore == 0){
             status = 'Completed';
+            color = 'green'
           }
           return(
             <Col span={12} style={{paddingRight:'20px'}}>
@@ -63,7 +65,7 @@ componentDidMount(){
               <p>Deliverd as {item.No_Of_Deliveries} unit(s).</p>
               <Space>
                 Status:
-                <Tag color="#87d068">{status}</Tag>
+                <Tag color={color}>{status}</Tag>
               </Space>
               <br />
               <Space style={{ marginTop: 16 }}>

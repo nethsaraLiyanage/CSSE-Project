@@ -6,6 +6,7 @@ import Logo1 from './../../assets/images/logo1.png';
 import SupplierViewRequisitions from './SupplierViewRequisitions';
 import SupplierOrders from './SupplierOrders';
 import AppliedOrders from './AppliedOrders';
+import ApprovedOrders from './ApprovedOrders';
 
 const { Header, Content, Footer } = Layout;
 
@@ -24,9 +25,9 @@ class SupplierDash extends Component {
     }else if(this.state.selectedItem === '2'){
         component = <AppliedOrders/>
     }else if(this.state.selectedItem === '3'){
-        component = <SupplierOrders/>
+        component = <ApprovedOrders/>
     }else if(this.state.selectedItem === '4'){
-        // component = <MakeAppointments/>
+        component = <SupplierOrders/>
     }
     const menu = (
       <Menu>
@@ -65,8 +66,9 @@ class SupplierDash extends Component {
             <Menu theme="dark" mode="horizontal" defaultSelectedKeys={this.state.selectedItem}>
                 <Menu.Item><img src={Logo1} alt="" width={"130px"} /></Menu.Item>
                 <Menu.Item key="1" onClick={() => {this.setState({ selectedItem: '1'})}}>Requests</Menu.Item>
-                <Menu.Item key="2" onClick={() => {this.setState({ selectedItem: '2'})}}>Applied Requests</Menu.Item>
-                <Menu.Item key="3" onClick={() => {this.setState({ selectedItem: '3'})}}>Completed Requests</Menu.Item>
+                <Menu.Item key="2" onClick={() => {this.setState({ selectedItem: '2'})}}>Applied Orders</Menu.Item>
+                <Menu.Item key="3" onClick={() => {this.setState({ selectedItem: '3'})}}>My Approved Orders</Menu.Item>
+                <Menu.Item key="4" onClick={() => {this.setState({ selectedItem: '4'})}}>Completed Orders</Menu.Item>
                 
                 <Menu.Item style={{marginLeft:'55%'}}>
                   <Dropdown  overlay={menu} placement="bottomRight" arrow>
