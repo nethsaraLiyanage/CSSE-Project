@@ -48,15 +48,15 @@ class SupplierViewRequisitions extends Component {
       this.fetchQuotas()
   }
 
-  handleSubmit = (id) => {
+  handleSubmit = (item) => {
 
     const data = {
       No_Of_Deliveries: this.state.No_Of_Deliveries,
       Additional_Description: this.state.Additional_Description,
-      quantity: 0,
+      quantity: item.P_Order.Total_Qty,
       request_price: this.state.request_price,
       supplier_ID: this.state.supplierId,
-      Request_Id:3
+      Request_Id:item.Quota_Request_Id
     }
     console.log(data);
 
@@ -166,7 +166,7 @@ class SupplierViewRequisitions extends Component {
                       <Row style={{marginTop:10}}>
                         <br />
                           <Col span={16}></Col>
-                          <Col span={6}><Button span={6} type="primary" block onClick={()=> this.handleSubmit(item.Quota_Request_Id)}>Apply</Button></Col>
+                          <Col span={6}><Button span={6} type="primary" block onClick={()=> this.handleSubmit(item)}>Apply</Button></Col>
                       </Row>
                   </Card>
                   <br /><br />

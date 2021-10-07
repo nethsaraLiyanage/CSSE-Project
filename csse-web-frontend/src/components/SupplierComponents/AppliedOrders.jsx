@@ -73,7 +73,7 @@ handleCancel = () => {
             status = 'Rejected';
             disableStatus = 'disable'
           }
-          let sendMore =  item.Item_No - item.quantity;
+          let sendMore =  item.quantity;
           return(
             <Col span={12} style={{paddingRight:'20px'}}>
               <Badge.Ribbon text={status} color={color}>
@@ -102,11 +102,11 @@ handleCancel = () => {
                     <br />
                     <Text strong>Additional Informations you provided: </Text>
                     <p>{item.Additional_Description}</p>
-                    <Row style={{marginTop:10}}>
+                    {/* <Row style={{marginTop:10}}>
                         <br />
                           <Col span={16}></Col>
                           <Col span={6}><Button span={6} disabled={disableStatus} type="primary" block onClick={() => this.showModal(item)}>Send a unit</Button></Col>
-                      </Row>
+                    </Row> */}
                 </Card>
               </Badge.Ribbon>
               <br /><br />
