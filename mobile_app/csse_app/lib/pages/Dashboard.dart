@@ -118,8 +118,7 @@ class _DashboardState extends State<Dashboard> {
                               child: Card(
                                 child: new InkWell(
                                   onTap: () => {
-                                    if (userFet["type"].toString() !=
-                                        "Delivery Manager")
+                                    if (userFet["type"].toString() != "Site Manager")
                                       {
                                         Dialogs.bottomMaterialDialog(
                                             context: context,
@@ -128,6 +127,10 @@ class _DashboardState extends State<Dashboard> {
                                             lottieBuilder: Lottie.network(
                                                 'https://assets5.lottiefiles.com/packages/lf20_yw3nyrsv.json'))
                                       }
+                                    else{
+                                    Navigator.pop(context, false),
+                                    Navigator.pushNamed(context, '/requisition')
+                                    }
                                   },
                                   child: Column(
                                     children: [

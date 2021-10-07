@@ -1,14 +1,18 @@
 
 import 'dart:convert';
 import 'dart:developer';
+import 'dart:io';
 
 import 'package:csse_app/models/ItemsModel.dart';
 import 'package:csse_app/models/PurchaseOrderItemsQtyModel.dart';
+import 'package:csse_app/models/UserDetailModel.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:http/http.dart' as http;
+import 'package:material_dialogs/material_dialogs.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 
 class Requisition extends StatefulWidget {
@@ -23,10 +27,87 @@ class _RequisitionState extends State<Requisition> {
   final siteController = TextEditingController();
   final managerController = TextEditingController();
   final quantityController = TextEditingController();
+  String? username = '';
+  String? password = '';
+  String? type = '';
+  String? email = '';
+  int? id = 0;
+  String? selected_Site_Name = '';
+  int? selected_Site_Id ;
+  DateTime _requestDateDate = DateTime.now();
+  int? _currentSelectedValue;
+  List<PurchaseOrderItemsQtyModel> selectedItemsList = [];
+  int? _itemsQuantity = 0;
+  int? _totalPrice = 0;
 
+  Future<UserDetailModel> getUser() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? username = prefs.getString('username');
+    String? password = prefs.getString('password');
+    String? type = prefs.getString('type');
+    String? email = prefs.getString('email');
+    int? id = prefs.getInt('id');
+    String? selected_Site_Name = prefs.getString('selected_Site_Name');
+    int? selected_Site_Id = prefs.getInt('selected_Site_Id');
 
+    UserDetailModel userDetail = new UserDetailModel(
+        userId: id!, name: username!, password: password!, email: email!, type: type!, siteId: selected_Site_Id!, siteName: selected_Site_Name!);
+
+    return userDetail;
+
+  }
+
+  Future<bool> CreateRequisition() async {
+    final String apiUrl = "http://10.0.2.2:8090/requisition/createRequisitions";
+    final bodyData = jsonEncode(
+        {
+          "selected_Site_Id": selected_Site_Id,
+          "managerId": id,
+          "requiredDate": _Datecontroller.text,
+          "selectedItemsList": selectedItemsList,
+          "totalPrice": _totalPrice,
+        });
+
+    final response = await http.post(Uri.parse(apiUrl),
+        body: bodyData,
+        headers: {HttpHeaders.contentTypeHeader: 'application/json'});
+
+    debugPrint(response.body);
+
+    if (response.statusCode == 200) {
+      final String responseString = response.body;
+
+      return true;
+    }
+    else {
+      return false;
+    }
+  }
+
+  static _getSiteId() async {
+    final prefs = await SharedPreferences.getInstance();
+    final value = prefs.getInt('selected_Site_Id');
+    int SiteId = value!;
+    return SiteId;
+
+  }
+  static _getSiteName() async {
+    final prefs = await SharedPreferences.getInstance();
+    final value = prefs.getString('selected_Site_Name');
+    String SiteName = value!;
+    return SiteName;
+
+  }
+  static _getManagerName() async {
+    final prefs = await SharedPreferences.getInstance();
+    final value = prefs.getString('username');
+    String ManagerName = value!;
+    return ManagerName;
+
+  }
 
   Future<List<ItemsModel>> fetchItemsList() async {
+
     final response = await http.get(Uri.parse('http://10.0.2.2:8090/item/allItems'));
 
     if (response.statusCode == 200) {
@@ -44,12 +125,6 @@ class _RequisitionState extends State<Requisition> {
     }
   }
 
-  DateTime _requestDateDate = DateTime.now();
-  int? _currentSelectedValue;
-  List<PurchaseOrderItemsQtyModel> selectedItemsList = [];
-  int? _itemsQuantity = 0;
-  int? _totalPrice = 0;
-
   void createSelectList(ItemsModel selectedItem){
     int item_Id = selectedItem.itemNo;
     debugPrint(quantityController.text);
@@ -59,8 +134,38 @@ class _RequisitionState extends State<Requisition> {
     setState(() {
       selectedItemsList.add(processedItem);
     });
-    _totalPrice = (_totalPrice! + price)!;
+    _totalPrice = (_totalPrice! + price);
     debugPrint(selectedItemsList.length.toString());
+  }
+  @override
+  void initState() {
+    super.initState();
+    _getSiteId();
+    _getSiteName();
+    _getManagerName();
+    _loadCounter();
+
+    WidgetsBinding.instance!.addPostFrameCallback((_) async {
+      // int SiteId= await _getSiteId();
+      // String SiteName = await _getSiteName();
+      // String ManagerName = await _getManagerName();
+      siteController.text = await _getSiteName();
+      managerController.text = await _getManagerName();
+      selected_Site_Id = await _getSiteId();
+    });
+  }
+
+  _loadCounter() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      username = prefs.getString('username');
+      password = prefs.getString('password');
+      type = prefs.getString('type');
+      email = prefs.getString('email');
+      id = prefs.getInt('id');
+      selected_Site_Name = prefs.getString('selected_Site_Name');
+      selected_Site_Id = prefs.getInt('selected_Site_Id');
+    });
   }
 
   @override
@@ -73,6 +178,7 @@ class _RequisitionState extends State<Requisition> {
           debugPrint(itrmsList.toString());
           if(snapshot.hasData){
             _currentSelectedValue = itrmsList![0].itemNo;
+            // getUser();
             return (Padding(
               padding: const EdgeInsets.fromLTRB(20.0, 30.0, 20.0, 50.0),
               child: SingleChildScrollView(
@@ -447,7 +553,7 @@ class _RequisitionState extends State<Requisition> {
                                                                             });
                                                                           },
                                                                           items: List.generate(
-                                                                            itrmsList!.length,
+                                                                            itrmsList.length,
                                                                                 (index) => DropdownMenuItem(
                                                                               child: Padding(
                                                                                 padding: const EdgeInsets.fromLTRB(1.0, 1.0, 1.0, 1.0),
@@ -648,7 +754,41 @@ class _RequisitionState extends State<Requisition> {
                                     RoundedRectangleBorder(
                                         borderRadius: BorderRadius.circular(18.0),
                                         side: BorderSide(color: Colors.green)))),
-                            onPressed: () => {Navigator.pushNamed(context, '/dash')},
+                            onPressed: () async {
+                              Dialogs.bottomMaterialDialog(
+                                context: context,
+                                title: 'Your request is processing',
+                                lottieBuilder: Lottie.network(
+                                  'https://assets1.lottiefiles.com/datafiles/bEYvzB8QfV3EM9a/data.json'));
+
+
+                              final bool? ResStatus = await CreateRequisition();
+
+                if (ResStatus!) {
+                  Dialogs.bottomMaterialDialog(
+                    context: context,
+                    title: 'Requestition has been created successfully',
+                    lottieBuilder: Lottie.network(
+                      'https://assets5.lottiefiles.com/packages/lf20_tAtUrg.json'));
+                    sleep(Duration(seconds: 5));
+                    Future.delayed(const Duration(seconds: 3), () {
+                      Navigator.pop(context, false);
+                      Navigator.pushNamed(context, '/dash');
+                });
+
+            } else {
+            Dialogs.bottomMaterialDialog(
+                context: context,
+                title: 'Error! creating request',
+                lottieBuilder: Lottie.network(
+                    'https://assets5.lottiefiles.com/packages/lf20_yw3nyrsv.json'));
+            sleep(Duration(seconds: 5));
+            Future.delayed(const Duration(seconds: 3), () {
+              Navigator.pop(context, false);
+              Navigator.pushNamed(context, '/dash');
+            });
+          }
+                            },
                           ),
                         )
                       ],
