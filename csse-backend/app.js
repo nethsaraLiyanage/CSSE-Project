@@ -22,6 +22,7 @@ const ItemRoutes = require('./routes/ItemRoutes');
 const OrderRoutes = require('./routes/OrderRoutes');
 const SupplierRoutes = require('./routes/SupplierRoutes');
 const SiteRoutes = require('./routes/SiteRoute');
+const InventoryRoutes = require('./routes/InventoryRoutes');
 
 
 const PORT = process.env.PORT || 8080;
@@ -40,6 +41,7 @@ app.use('/item', ItemRoutes);
 app.use('/order', OrderRoutes);
 app.use('/supplier', SupplierRoutes);
 app.use('/site', SiteRoutes);
+app.use('/inventory', InventoryRoutes);
 
 //stablish MSSQL Db connection
 dbOperations.getConnection;
