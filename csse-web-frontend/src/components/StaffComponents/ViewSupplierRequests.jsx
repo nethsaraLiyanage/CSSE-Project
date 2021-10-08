@@ -22,14 +22,15 @@ const ViewSupplierRequests = () => {
         })
     },[]);
 
-    const placeOrder = (rID, supID, orderDate) => {
+    const placeOrder = (rID, supID, orderDate,quantity) => {
       const payload = {
         request_Id: rID,
         supplier: supID,
         order_date: null,
         requested_date:  null,
         p_order: pID,
-        item: ItemID
+        item: ItemID,
+        quantity: quantity
     }
         axios.post("http://localhost:8090/requisition/request/approve", payload).then((res) => {
           console.log(res.data.state);
@@ -67,7 +68,7 @@ const ViewSupplierRequests = () => {
         <Card
           type="inner"
           title={request.Supplier.Name}
-          extra={[<Button  disabled={request.status === 'approved'} onClick={ e => placeOrder(request.Request_Id,request.Supplier_ID,null,)}
+          extra={[<Button  disabled={request.status === 'approved'} onClick={ e => placeOrder(request.Request_Id,request.Supplier_ID,null,request.quantity)}
                            type="primary">Place Order</Button>, <Button onClick={ e => rejectRequest(request.Request_Id,request.Supplier_ID)} type="danger">Cancel</Button>]}
         >
             <Space>

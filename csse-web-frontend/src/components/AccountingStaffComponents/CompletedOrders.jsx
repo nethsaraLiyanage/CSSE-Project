@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { Space, Input, Button, Card, Table, List, Tag } from "antd";
 import axios from "axios";
-import { Link } from "react-router-dom";
+import { Link, useHistory,useParams } from "react-router-dom";
 
 const CompletedOrders = () => {
+
+  const  history = useHistory();
 
   const [orders,setOrders] = useState([]);
 
@@ -39,9 +41,10 @@ const CompletedOrders = () => {
 
   useEffect(() => {
 
-    // if(username === null){
-    //   history.push("/login")
-    // }
+    const user = localStorage.getItem('user_id');
+    if(user === null){
+      history.push("/");
+    }
 
     axios.get("http://localhost:8090/requisition/completed-orders").then((res) => {
       const orders = res.data.Order;
