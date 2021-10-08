@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Input, Button, Card, Avatar, List, Tag } from "antd";
 import axios from "axios";
 import {Link, useHistory} from "react-router-dom";
+import AccountStaffHeader from "../Common/AccountStaffHeader";
 
 const CompletedOrders = () => {
 
@@ -20,6 +21,7 @@ const CompletedOrders = () => {
 
   return (
     <div>
+      <AccountStaffHeader/>
     <Card title="Paid Orders">
     {orders.map((order) => (
       <Card
