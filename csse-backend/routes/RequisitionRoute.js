@@ -422,7 +422,7 @@ router.get("/my-request/:id", async (req, res, _next) => {
   }
 });
 
-//Approve supplier request
+//Add new Purchase order
 router.post("/createRequisitions", async (req, res, _next) => {
   console.log('Inside Create Requesition');
   console.log('Req Date is : ' , moment(req.body.requiredDate).format('YYYYMMDD'))

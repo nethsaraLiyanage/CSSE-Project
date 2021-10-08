@@ -1,11 +1,14 @@
 import 'dart:convert';
 import 'dart:developer';
+import 'dart:io';
 
 import 'package:csse_app/models/InventoryItems.dart';
 import 'package:csse_app/models/ItemsModel.dart';
 import 'package:csse_app/models/PurchaseOrderItemsQtyModel.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:material_dialogs/material_dialogs.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Inventory extends StatefulWidget {
   Inventory({Key? key}) : super(key: key);
@@ -22,6 +25,12 @@ class _InventoryState extends State<Inventory> {
   final managerController = TextEditingController();
 
   final thresholdController = TextEditingController();
+
+  String? username = '';
+  String? email = '';
+  int? id = 0;
+  String? selected_Site_Name = '';
+  int? selected_Site_Id ;
 
   List<PurchaseOrderItemsQtyModel> selectedItemsList = [];
 
@@ -61,21 +70,83 @@ class _InventoryState extends State<Inventory> {
     }
   }
 
-  void createSelectList(ItemsModel selectedItem) {
-    int item_Id = selectedItem.itemNo;
-    debugPrint(thresholdController.text);
-    int quantity = int.parse(thresholdController.text);
-    int price = quantity * selectedItem.estimatedUnitPrice;
-    PurchaseOrderItemsQtyModel processedItem = PurchaseOrderItemsQtyModel(
-        itemNo: item_Id,
-        itemName: selectedItem.itemName,
-        quantity: quantity,
-        Price: price);
-    setState(() {
-      selectedItemsList.add(processedItem);
-    });
-    debugPrint(selectedItemsList.length.toString());
+  Future<bool> AddInventoryItem() async {
+    final String apiUrl = "http://10.0.2.2:8090/inventory/addItem";
+    final bodyData = jsonEncode(
+        {
+          "selected_Site_Id": selected_Site_Id,
+          "item_No": _currentSelectedValue,
+          "threshold": thresholdController.text,
+        });
+
+    final response = await http.post(Uri.parse(apiUrl),
+        body: bodyData,
+        headers: {HttpHeaders.contentTypeHeader: 'application/json'});
+
+    debugPrint(response.body);
+
+    if (response.statusCode == 200) {
+      final String responseString = response.body;
+
+      return true;
+    }
+    else {
+      return false;
+    }
   }
+
+  static _getSiteId() async {
+    final prefs = await SharedPreferences.getInstance();
+    final value = prefs.getInt('selected_Site_Id');
+    int SiteId = value!;
+    return SiteId;
+
+  }
+  static _getSiteName() async {
+    final prefs = await SharedPreferences.getInstance();
+    final value = prefs.getString('selected_Site_Name');
+    String SiteName = value!;
+    return SiteName;
+
+  }
+  static _getManagerName() async {
+    final prefs = await SharedPreferences.getInstance();
+    final value = prefs.getString('username');
+    String ManagerName = value!;
+    return ManagerName;
+
+  }
+
+  // void createSelectList(ItemsModel selectedItem) {
+  //   int item_Id = selectedItem.itemNo;
+  //   debugPrint(thresholdController.text);
+  //   int quantity = int.parse(thresholdController.text);
+  //   int price = quantity * selectedItem.estimatedUnitPrice;
+  //   PurchaseOrderItemsQtyModel processedItem = PurchaseOrderItemsQtyModel(
+  //       itemNo: item_Id,
+  //       itemName: selectedItem.itemName,
+  //       quantity: quantity,
+  //       Price: price);
+  //   setState(() {
+  //     selectedItemsList.add(processedItem);
+  //   });
+  //   debugPrint(selectedItemsList.length.toString());
+  // }
+
+  @override
+  void initState() {
+    super.initState();
+    _getSiteId();
+    _getSiteName();
+    _getManagerName();
+
+    WidgetsBinding.instance!.addPostFrameCallback((_) async {
+      siteController.text = await _getSiteName();
+      managerController.text = await _getManagerName();
+      selected_Site_Id = await _getSiteId();
+    });
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -538,15 +609,40 @@ class _InventoryState extends State<Inventory> {
                                                                           .green),
                                                                   shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                                                                       RoundedRectangleBorder(borderRadius: BorderRadius.circular(18.0), side: BorderSide(color: Colors.green)))),
-                                                              onPressed: () => {
+                                                              onPressed: () async {
                                                                 currentItem = itrmsList
-                                                                    .where((f) =>
-                                                                        f.itemNo ==
-                                                                        _currentSelectedValue)
-                                                                    .toList(),
-                                                                createSelectList(
-                                                                    currentItem[
-                                                                        0])
+                                                                    .where((f) => f.itemNo ==  _currentSelectedValue).toList();
+                                                                Dialogs.bottomMaterialDialog(
+                                                                    context: context,
+                                                                    title: 'Your request is processing',
+                                                                    lottieBuilder: Lottie.network(
+                                                                        'https://assets1.lottiefiles.com/datafiles/bEYvzB8QfV3EM9a/data.json'));
+                                                                      final bool? isSuccess = await AddInventoryItem();
+
+                                                                      if(isSuccess!){
+                                                                        Dialogs.bottomMaterialDialog(
+                                                                            context: context,
+                                                                            title: 'Item Added Successfully',
+                                                                            lottieBuilder: Lottie.network(
+                                                                                'https://assets5.lottiefiles.com/packages/lf20_tAtUrg.json'));
+                                                                        sleep(Duration(seconds: 5));
+                                                                        Future.delayed(const Duration(seconds: 3), () {
+                                                                          Navigator.pop(context, false);
+                                                                          Navigator.pushNamed(context, '/inventory');
+                                                                        });
+                                                                      }
+                                                                      else{
+                                                                        Dialogs.bottomMaterialDialog(
+                                                                            context: context,
+                                                                            title: 'Error! Inserting Item',
+                                                                            lottieBuilder: Lottie.network(
+                                                                                'https://assets5.lottiefiles.com/packages/lf20_yw3nyrsv.json'));
+                                                                        sleep(Duration(seconds: 5));
+                                                                        Future.delayed(const Duration(seconds: 3), () {
+                                                                          Navigator.pop(context, false);
+                                                                          Navigator.pushNamed(context, '/dash');
+                                                                        });
+                                                                      }
                                                               },
                                                             ),
                                                           )))
