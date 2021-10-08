@@ -194,7 +194,7 @@ router.get("/supplier-request/:pid/:iid", async (req, res, _next) => {
     models.Supplier_Apply_Quota_Request.findAll({
       where: {
         Request_Id: qid,
-        status: "panding",
+        status: "pending",
       },
       include: [
         {
@@ -222,7 +222,8 @@ router.get("/quota-request/:pid/:iid", async (req, res, _next) => {
 
 //Get all quota requests
 router.get("/quota-requests", async (req, res, _next) => {
-  await models.Quota_Request.findAll({
+  try{
+  await models.Purchase_Order_Items_Qty.findAll({
     include: [
       {
         model: models.Purchase_Order_Items_Qty,
@@ -232,12 +233,26 @@ router.get("/quota-requests", async (req, res, _next) => {
             model: models.Items,
             as: "Item_No_Item",
           },
+          {
+            model: models.Purchase_Order,
+            as: "P_Order",
+            include: [
+              {
+                model: models.Site,
+                as: "Site",
+              },
+            ]
+          },
         ],
       },
     ],
   }).then((data) => {
     res.json({ quotas: data });
   });
+}
+catch(e){
+  res.json({ error: e });
+}
 });
 
 //Get all completed orders
@@ -251,6 +266,10 @@ router.get("/completed-orders", async (req, res, _next) => {
       {
         model: models.Items,
         as: "Item_No_Item",
+      },
+      {
+        model: models.Shipping_Order,
+        as: "S_Order",
       },
     ],
   }).then((data) => {

@@ -31,18 +31,22 @@ const ViewPlacedOrders = () => {
                     type="inner"
                     title={order.Item_No_Item.Item_Name}
                 >
-                    <Space>
-                       Total Quantity :
+                    <p>
+                       Total Quantity:  
                         <Tag color="#87d068">{order.Total_Qty}</Tag>
-                    </Space>
+                    </p>
+                    <p>
+                       Remaining Quantity: 
+                        <Tag color="#87d068">{order.Remaining_Qty}</Tag>
+                    </p>
                     <div style={{ marginTop: 16 }}>
-                    { order.Total_Qty == order.Remaining_Qty &&
+                    { order.Remaining_Qty == 0 &&
                         <Tag color="green">Completed</Tag>
                     }
                     </div>
 
                     <div style={{ marginTop: 16 }}>
-                        { order.Total_Qty > order.Remaining_Qty &&
+                        { order.Remaining_Qty > 0 &&
                         <Tag color="orange">In progress</Tag>
                         }
                     </div>
