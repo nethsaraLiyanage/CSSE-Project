@@ -27,7 +27,6 @@ const Login = () => {
 
            const userType = res.data.user.Type;
 
-           console.log(res);
             if(res.data.status === 200 && userType == "Line Manager" ){
                 
                 history.push('/LineManager');
@@ -47,6 +46,8 @@ const Login = () => {
             else{
                 alert("Something went wrong");
             }
+
+            localStorage.setItem("user_id",res.data.user.User_ID);
         })
     }
 

@@ -1,5 +1,5 @@
 const should = require("should");
-const request = require("request");
+const request = require('superagent');
 const chai = require("chai");
 const expect = chai.expect;
 const urlBase = "http://localhost:8090/lineManager";

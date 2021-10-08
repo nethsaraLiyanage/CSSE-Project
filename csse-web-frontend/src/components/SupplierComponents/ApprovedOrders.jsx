@@ -35,7 +35,7 @@ class ApprovedOrders extends Component {
       this.setState({
         visible:true,
         selectedItem:item,
-        sendMore:item.quantity
+        sendMore:item.Shipping_Order_Items_Qties[0].Remaining_Qty
       })
       console.log(item)
     };
@@ -73,35 +73,35 @@ class ApprovedOrders extends Component {
                             status = 'Rejected';
                             disableStatus = 'disable'
                         }
-                        let sendMore =  item.quantity;
+                        let sendMore = item.Shipping_Order_Items_Qties[0].Remaining_Qty;
                         return(
                             <Col span={12} style={{paddingRight:'20px'}}>
                             {/* <Badge.Ribbon text={status} color={color}> */}
                                 <Card
                                 type="inner"
-                                title={item.Item_No +" units from "+ item.Item_Name}
+                                title={item.Shipping_Order_Items_Qties[0].Total_Qty +" units from "+ item.Shipping_Order_Items_Qties[0].Item_No_Item.Item_Name}
                                 >
                                     
-                                    <Row style={{marginTop:5}}>
-                                    <Col span={6}><Text strong>Deliver as : </Text></Col>
-                                    <Col>
-                                        <Row>
-                                            <p>{item.No_Of_Deliveries} deliveries.</p>
-                                        </Row>
-                                    </Col>
-                                    </Row>
+                                    {/* <Row style={{marginTop:5}}>
+                                        <Col span={6}><Text strong>Deliver as : </Text></Col>
+                                        <Col>
+                                            <Row>
+                                                <p>{item.No_Of_Deliveries} deliveries.</p>
+                                            </Row>
+                                        </Col>
+                                    </Row> */}
                                     
                                     <Row style={{marginTop:5}}>
                                         <Col span={6}><Text strong>Your Price for a unit : </Text></Col>
-                                        <Col><p>{item.request_price}/= per unit</p></Col>
+                                        <Col><p>{item.Sub_Total}/= per unit</p></Col>
                                     </Row>
                                     <Row style={{marginTop:5}}>
                                         <Col span={6}><Text strong>You have to send </Text></Col>
                                         <Col><p><Tag color="#87d068">{sendMore}</Tag> units.</p></Col>
                                     </Row>
                                     <br />
-                                    <Text strong>Additional Informations you provided: </Text>
-                                    <p>{item.Additional_Description}</p>
+                                    {/* <Text strong>Additional Informations you provided: </Text>
+                                    <p>{item.Additional_Description}</p> */}
                                     <Row style={{marginTop:10}}>
                                         <br />
                                         <Col span={16}></Col>
@@ -127,6 +127,8 @@ class ApprovedOrders extends Component {
                     <Col span={6}><Text strong>You have to send </Text></Col>
                     <Col><p><Tag color="#87d068">{this.state.sendMore}</Tag> more Unit(s).</p></Col>
                     </Row>
+
+                    
                     
                 </Modal>
             </div>

@@ -15,12 +15,12 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.FLOAT,
       allowNull: true
     },
-    Recipt_No: {
+    S_OrderId: {
       type: DataTypes.INTEGER,
       allowNull: false,
       references: {
-        model: 'Goods_Recipt',
-        key: 'Recipt_No'
+        model: 'Shipping_Order',
+        key: 'S_Order_Id'
       }
     },
     Account_Staff_Id: {

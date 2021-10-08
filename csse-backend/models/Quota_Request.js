@@ -10,6 +10,7 @@ module.exports = function(sequelize, DataTypes) {
     Item_No: {
       type: DataTypes.INTEGER,
       allowNull: false,
+      primaryKey: true,
       references: {
         model: 'Purchase_Order_Items_Qty',
         key: 'P_Order_Id'
@@ -18,6 +19,7 @@ module.exports = function(sequelize, DataTypes) {
     P_Order_Id: {
       type: DataTypes.INTEGER,
       allowNull: false,
+      primaryKey: true,
       references: {
         model: 'Purchase_Order_Items_Qty',
         key: 'P_Order_Id'
@@ -50,6 +52,8 @@ module.exports = function(sequelize, DataTypes) {
         unique: true,
         fields: [
           { name: "Quota_Request_Id" },
+          { name: "Item_No" },
+          { name: "P_Order_Id" },
         ]
       },
     ]
