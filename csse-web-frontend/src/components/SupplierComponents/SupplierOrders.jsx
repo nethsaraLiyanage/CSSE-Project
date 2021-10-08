@@ -72,7 +72,7 @@ componentDidMount(){
                 Payment:
                 <Tag color="#108ee9">Completed</Tag>
                 <Button type="secondary" onClick={this.showModal}>
-                  view
+                  View
                 </Button>
                 <Modal
                   title="Payment"
