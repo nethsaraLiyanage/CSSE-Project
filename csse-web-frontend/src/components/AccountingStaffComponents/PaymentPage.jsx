@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Space, Button, Card } from "antd";
 import {useHistory,useParams} from "react-router-dom";
 import axios from "axios";
+import AccountStaffHeader from "../Common/AccountStaffHeader";
 
 
 const PaymentPage = () => {
@@ -59,6 +60,7 @@ const PaymentPage = () => {
 
   return (
     <div>
+        <AccountStaffHeader/>
    <Card 
    style={{ width: 600, marginTop:'10%', marginLeft:'30%'}}
    type="inner"

@@ -3,6 +3,7 @@ import { Form, Col, Button, Card, DatePicker, List, Tag } from "antd";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import {useHistory,useParams} from "react-router-dom";
+import AccountStaffHeader from "../Common/AccountStaffHeader";
 
 
 const ViewPaidOrder = () => {
@@ -41,8 +42,9 @@ const ViewPaidOrder = () => {
 
 
     return (
+        <div>
+            <AccountStaffHeader/>
     <div style={{marginLeft:'30%', marginTop: '10%', padding: '20px', width: '40%', border: '3px solid black'}}>
-     
       <Card title={supplier}>
 
         <p>Item: {item}</p>
@@ -52,8 +54,8 @@ const ViewPaidOrder = () => {
         <p>Paid Amount: Rs {amount}</p>
 
       </Card>
-     
     </div>
+        </div>
   );
 };
 
