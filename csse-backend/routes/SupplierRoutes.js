@@ -42,15 +42,15 @@ router.get("/applied/:id", async (req, res, _next) => {
 });
 
 //Get all applied requests for a supplier which are approved
-router.get("/approvedApplyies/:id", async (req, res, _next) => {
-  try{
-  const [results, metadata] = await sequelize.query("SELECT * FROM Quota_Request FULL OUTER JOIN Supplier_Apply_Quota_Request ON Quota_Request.Quota_Request_Id = Supplier_Apply_Quota_Request.Request_Id FULL OUTER JOIN Items ON Quota_Request.Item_No = Items.Item_No  where Supplier_Apply_Quota_Request.Supplier_ID = "+req.params.id+" and Supplier_Apply_Quota_Request.status = 'approved'" );
-  res.json(results);
-  }
-  catch(e){
-    res.json({ state:400, quotas: e });
-  }
-});
+// router.get("/approvedApplyies/:id", async (req, res, _next) => {
+//   try{
+//   const [results, metadata] = await sequelize.query("SELECT * FROM Quota_Request FULL OUTER JOIN Supplier_Apply_Quota_Request ON Quota_Request.Quota_Request_Id = Supplier_Apply_Quota_Request.Request_Id FULL OUTER JOIN Items ON Quota_Request.Item_No = Items.Item_No  where Supplier_Apply_Quota_Request.Supplier_ID = "+req.params.id+" and Supplier_Apply_Quota_Request.status = 'approved'" );
+//   res.json(results);
+//   }
+//   catch(e){
+//     res.json({ state:400, quotas: e });
+//   }
+// });
 
 //Post supplier Apply
 router.post("/supplierApply", async (req, res, _next) => {
@@ -78,24 +78,24 @@ router.post("/supplierApply", async (req, res, _next) => {
 });
 
 //Get all applied requests for a supplier which are approved
-// router.get('/approvedApplyies/:id', async (req, res, _next) => {
+router.get('/approvedApplyies/:id', async (req, res, _next) => {
 
-//   await models.Shipping_Order.findAll({
-//     where: {
-//       Supplier_Id : req.params.id
-//     },
-//       include: [{
-//           model:models.Shipping_Order_Items_Qty, as: 'Shipping_Order_Items_Qties',
-//         include: [
-//           {
-//             model: models.Items, as: 'Item_No_Item'
-//           }
-//         ]
-//       }]
-//   }).then( data => {
-//       res.json(data);
-//   })
+  await models.Shipping_Order.findAll({
+    where: {
+      Supplier_Id : req.params.id
+    },
+      include: [{
+          model:models.Shipping_Order_Items_Qty, as: 'Shipping_Order_Items_Qties',
+        include: [
+          {
+            model: models.Items, as: 'Item_No_Item'
+          }
+        ]
+      }]
+  }).then( data => {
+      res.json(data);
+  })
 
-// });
+});
 
 module.exports = router;
