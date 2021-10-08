@@ -41,6 +41,10 @@ const ViewQuotaRequest = () => {
                 {quotas.map((quota) => (
                     <Card type="inner" title={quota.P_Order.Item_No_Item.Item_Name}
                     >
+                        <p>Site: {quota.P_Order.P_Order.Site.Site_Name}</p>
+                        <p>Opening Date: {quota.Start_Date}</p>
+                        <p>Closing Date: {quota.Closing_Date}</p>
+                        <p>Quantity: {quota.Total_Qty}</p>
                         <Button onClick={ e => viewSuppliers(quota.P_Order_Id,quota.Item_No)} type="secondary">View Suppliers</Button>
                     </Card>
                 ))}

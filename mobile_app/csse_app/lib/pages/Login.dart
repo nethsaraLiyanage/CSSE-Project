@@ -171,8 +171,15 @@ class _LoginState extends State<Login> {
                             prefs.setString('email', user.email);
                             prefs.setString('password', user.password);
                             prefs.setInt('id', user.userId);
-                            Navigator.pop(context, false);
-                            Navigator.pushNamed(context, '/selectSite');
+                            if(user.type == "Site Manager"){
+                              Navigator.pop(context, false);
+                              Navigator.pushNamed(context, '/selectSite');
+                            }
+                            else{
+                              Navigator.pop(context, false);
+                              Navigator.pushNamed(context, '/dash');
+                            }
+
                           } else {
                             Dialogs.bottomMaterialDialog(
                                 context: context,

@@ -38,6 +38,11 @@ const ApprovedRequisition = () => {
 
   useEffect(() => {
 
+    const user = localStorage.getItem('user_id');
+    if(user === null){
+      history.push("/");
+    }
+
     axios.get("http://localhost:8090/requisition/approved").then((res) => {
       const orders = res.data.Goods_Recipts;
       const data = [];

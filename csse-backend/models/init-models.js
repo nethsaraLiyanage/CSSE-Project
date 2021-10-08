@@ -40,6 +40,8 @@ function initModels(sequelize) {
   Items.belongsToMany(Shipping_Order, { as: 'S_Order_Id_Shipping_Orders', through: Shipping_Order_Items_Qty, foreignKey: "Item_No", otherKey: "S_Order_Id" });
   Items.belongsToMany(Site, { as: 'Site_Id_Sites', through: Inventory, foreignKey: "Item_No", otherKey: "Site_Id" });
   Purchase_Order.belongsToMany(Items, { as: 'Item_No_Items_Purchase_Order_Items_Qties', through: Purchase_Order_Items_Qty, foreignKey: "P_Order_Id", otherKey: "Item_No" });
+  Purchase_Order_Items_Qty.belongsToMany(Purchase_Order_Items_Qty, { as: 'P_Order_Id_Purchase_Order_Items_Qties', through: Quota_Request, foreignKey: "Item_No", otherKey: "P_Order_Id" });
+  Purchase_Order_Items_Qty.belongsToMany(Purchase_Order_Items_Qty, { as: 'Item_No_Purchase_Order_Items_Qties', through: Quota_Request, foreignKey: "P_Order_Id", otherKey: "Item_No" });
   Shipping_Order.belongsToMany(Items, { as: 'Item_No_Items_Shipping_Order_Items_Qties', through: Shipping_Order_Items_Qty, foreignKey: "S_Order_Id", otherKey: "Item_No" });
   Site.belongsToMany(Items, { as: 'Item_No_Items_Inventories', through: Inventory, foreignKey: "Site_Id", otherKey: "Item_No" });
   Goods_Recipt.belongsTo(GeneralUser, { as: "Delivery_Mgr", foreignKey: "Delivery_Mgr_Id"});
@@ -58,8 +60,6 @@ function initModels(sequelize) {
   GeneralUser.hasMany(Supplier_Apply_Quota_Request, { as: "Supplier_Apply_Quota_Requests", foreignKey: "Supplier_ID"});
   Goods_Recipt_Order_Items_Qty.belongsTo(Goods_Recipt, { as: "Recipt_No_Goods_Recipt", foreignKey: "Recipt_No"});
   Goods_Recipt.hasMany(Goods_Recipt_Order_Items_Qty, { as: "Goods_Recipt_Order_Items_Qties", foreignKey: "Recipt_No"});
-  Payment.belongsTo(Goods_Recipt, { as: "Recipt_No_Goods_Recipt", foreignKey: "Recipt_No"});
-  Goods_Recipt.hasMany(Payment, { as: "Payments", foreignKey: "Recipt_No"});
   Goods_Recipt.belongsTo(Item_Supplier, { as: "Item_Supplier", foreignKey: "Item_Supplier_Id"});
   Item_Supplier.hasMany(Goods_Recipt, { as: "Goods_Recipts", foreignKey: "Item_Supplier_Id"});
   Goods_Recipt_Order_Items_Qty.belongsTo(Items, { as: "Item_No_Item", foreignKey: "Item_No"});
@@ -84,6 +84,8 @@ function initModels(sequelize) {
   Purchase_Order_Items_Qty.hasMany(Quota_Request, { as: "P_Order_Quota_Requests", foreignKey: "P_Order_Id"});
   Goods_Recipt.belongsTo(Shipping_Order, { as: "S_Order", foreignKey: "S_Order_Id"});
   Shipping_Order.hasMany(Goods_Recipt, { as: "Goods_Recipts", foreignKey: "S_Order_Id"});
+  Payment.belongsTo(Shipping_Order, { as: "S_Order", foreignKey: "S_OrderId"});
+  Shipping_Order.hasMany(Payment, { as: "Payments", foreignKey: "S_OrderId"});
   Shipping_Order_Items_Qty.belongsTo(Shipping_Order, { as: "S_Order", foreignKey: "S_Order_Id"});
   Shipping_Order.hasMany(Shipping_Order_Items_Qty, { as: "Shipping_Order_Items_Qties", foreignKey: "S_Order_Id"});
   Inventory.belongsTo(Site, { as: "Site", foreignKey: "Site_Id"});

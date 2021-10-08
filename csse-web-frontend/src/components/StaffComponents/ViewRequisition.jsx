@@ -3,6 +3,7 @@ import { Form, Input, Button, Card, DatePicker, List, Tag } from "antd";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import {useHistory,useParams} from "react-router-dom";
+import StaffHeader from "../Common/StaffHeader";
 
 
 const Viewequisition = () => {
@@ -66,7 +67,8 @@ const Viewequisition = () => {
 
     return (
     <div>
-      <Card title="Requisition 001">
+      <StaffHeader/>
+      <Card title="Requisition Details">
         <p>Site: {site}</p>
         <p>Site manager:  {manager}</p>
         {items.map((item) => (
