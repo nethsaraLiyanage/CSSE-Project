@@ -17,6 +17,7 @@ const PaymentPage = () => {
   const [date,setDate] = useState();
   const [supplier,setSupplier] = useState();
   const [reciptNo,setRno] = useState();
+  const [SNo,setSno] = useState();
 
 
   useEffect(() => {
@@ -28,6 +29,7 @@ const PaymentPage = () => {
         setRno(res.data.Order.Recipt_No);
         setDate(res.data.Order.Ordered_Date);
         setSupplier(res.data.other.Supplier.Name);
+        setSno(res.data.other.S_Order_Id);
 
     }).catch((err) => {
       console.log(err);
@@ -37,7 +39,7 @@ const PaymentPage = () => {
   const makePayment = () => {
 
       const payLoad = {
-          recipt_ID: reciptNo,
+          s_Id: SNo,
           user_ID: 6,
           amount: amount
       }

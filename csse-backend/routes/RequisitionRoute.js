@@ -29,7 +29,7 @@ router.get("/approved", async (req, res, _next) => {
       },
     ],
   }).then((data) => {
-    res.json({ Goods_Recipts: data });
+    res.json({ status: 200, Goods_Recipts: data });
   });
 });
 
@@ -48,9 +48,6 @@ router.get("/approved/:id", async (req, res, _next) => {
         model: models.GeneralUser,
         as: "Site_Manager",
       },
-      // {
-      //   model: models.Items, as: "Item_No_Items_Purchase_Order_Items_Qties",
-      // },
       {
         model: models.Purchase_Order_Items_Qty,
         as: "Purchase_Order_Items_Qties",
@@ -223,7 +220,7 @@ router.get("/quota-request/:pid/:iid", async (req, res, _next) => {
 //Get all quota requests
 router.get("/quota-requests", async (req, res, _next) => {
   try{
-  await models.Purchase_Order_Items_Qty.findAll({
+  await models.Quota_Request.findAll({
     include: [
       {
         model: models.Purchase_Order_Items_Qty,
@@ -247,7 +244,8 @@ router.get("/quota-requests", async (req, res, _next) => {
       },
     ],
   }).then((data) => {
-    res.json({ quotas: data });
+    const final = data.filter((v,i,a)=>a.findIndex(t=>(JSON.stringify(t) === JSON.stringify(v)))===i);
+    res.json({ quotas: final });
   });
 }
 catch(e){
@@ -397,7 +395,7 @@ router.put("/make-payment/:sid/:iid", async (req, res, _next) => {
   const paymentSlip = await models.Payment.build({
     Date: sequelize.fn("GETDATE"),
     Amount: req.body.amount,
-    Recipt_No: req.body.recipt_ID,
+    S_OrderId: req.body.s_Id,
     Account_Staff_Id: req.body.user_ID,
   });
 

@@ -34,13 +34,13 @@ const Viewequisition = () => {
 
   const makeQuotaRequest = (itemID,orderID) => {
 
-    const user = 7;
+    const userID = localStorage.getItem('user_id');
     const payload = {
       item:itemID,
       order: orderID,
-      start_data: null, //this date
+      start_data: null,
       closing_date: null,  //closingDate
-      userID: user
+      userID: userID
     }
     axios.post("http://localhost:8090/requisition/request-quota",payload).then((res) => {
       if (res.data.state == 201){
