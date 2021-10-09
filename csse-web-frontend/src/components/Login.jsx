@@ -15,7 +15,9 @@ const Login = () => {
     const [email, setEmail] = useState();
     const [password, setPassword] = useState();
     
-    const login = () => {
+    const login = (e) => {
+
+        e.preventDefault();
 
         const payLoad = {
             email: email,
@@ -25,29 +27,32 @@ const Login = () => {
         const url = "http://localhost:8090/user/login/";
         axios.post(url, payLoad).then((res) => {
 
-           const userType = res.data.user.Type;
+            if (res.data.status === 200) {
 
-            if(res.data.status === 200 && userType == "Line Manager" ){
-                
-                history.push('/LineManager');
-            }
-            else if(res.data.status === 200 && userType == "Proccument Staff"){
-               
-                history.push('/approved-requisition');
-            }
-            else if(res.data.status === 200 && userType == "Accounting Staff"){
-               
-                history.push('/completed-orders');
-            }
-            else if(res.data.status === 200 && userType == "Supplier"){
-               
-                history.push('/supplier');
+                const userType = res.data.user.Type;
+
+                if (userType == "Line Manager") {
+
+                    history.push('/LineManager');
+                } else if (userType == "Proccument Staff") {
+
+                    history.push('/approved-requisition');
+                } else if (userType == "Accounting Staff") {
+
+                    history.push('/completed-orders');
+                } else if (userType == "Supplier") {
+
+                    history.push('/supplier');
+                } else {
+                    alert("Invalid login");
+                }
+
+                localStorage.setItem("user_id",res.data.user.User_ID);
             }
             else{
                 alert("Something went wrong");
             }
 
-            localStorage.setItem("user_id",res.data.user.User_ID);
         })
     }
 
@@ -83,7 +88,7 @@ const Login = () => {
               },
             ]}
           >
-            <Input name="email" onChange={(e) => {setEmail(e.target.value)}}/>
+            <Input name="email" type={"email"}  pattern=".+@globex\.com" onChange={(e) => {setEmail(e.target.value)}}/>
           </Form.Item>
 
           <Form.Item

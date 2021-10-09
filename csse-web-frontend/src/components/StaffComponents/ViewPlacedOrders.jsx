@@ -31,14 +31,12 @@ const ViewPlacedOrders = () => {
                     type="inner"
                     title={order.Item_No_Item.Item_Name}
                 >
-                    <p>
-                       Total Quantity:  
-                        <Tag color="#87d068">{order.Total_Qty}</Tag>
-                    </p>
-                    <p>
-                       Remaining Quantity: 
-                        <Tag color="#87d068">{order.Remaining_Qty}</Tag>
-                    </p>
+                    <p> Supplier: <b> { order.S_Order.Supplier.Name}</b></p>
+                    <p>Total Quantity: <Tag color="#87d068">{ order.Total_Qty}</Tag></p>
+                    <p>Remaining Quantity:  <Tag color="#87d068">{ order.Remaining_Qty}</Tag></p>
+                    <p> Ordered date: <b> { order.S_Order.Ordered_Date}</b></p>
+
+
                     <div style={{ marginTop: 16 }}>
                     { order.Remaining_Qty == 0 &&
                         <Tag color="green">Completed</Tag>

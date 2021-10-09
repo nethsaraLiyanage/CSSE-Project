@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Space, Input, Button, Card, Table, List, Tag } from "antd";
 import axios from "axios";
 import { Link, useHistory,useParams } from "react-router-dom";
+import AccountStaffHeader from "../Common/AccountStaffHeader";
 
 const CompletedOrders = () => {
 
@@ -67,6 +68,7 @@ const CompletedOrders = () => {
 
   return (
     <div>
+      <AccountStaffHeader/>
       <Table columns={columns} dataSource={orders} />
     </div>
   );
