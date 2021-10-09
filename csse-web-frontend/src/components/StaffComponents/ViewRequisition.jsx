@@ -4,6 +4,10 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import {useHistory,useParams} from "react-router-dom";
 import StaffHeader from "../Common/StaffHeader";
+import {toast} from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
+toast.configure();
 
 
 const Viewequisition = () => {
@@ -39,12 +43,12 @@ const Viewequisition = () => {
       item:itemID,
       order: orderID,
       start_data: null,
-      closing_date: null,  //closingDate
+      closing_date: setClosingDate,  //closingDate
       userID: userID
     }
     axios.post("http://localhost:8090/requisition/request-quota",payload).then((res) => {
       if (res.data.state == 201){
-        alert('Quota request posted!');
+          toast.success("Quota request posted!");
         history.push('/all-quotas')
     
       }

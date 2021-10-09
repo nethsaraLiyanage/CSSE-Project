@@ -86,23 +86,24 @@ router.post("/request-quota", async (req, res, _next) => {
         P_Order_Id: req.body.order,
         Item_No: req.body.item,
         Start_Date: sequelize.fn("GETDATE"),
-        Closing_Date: req.body.closing_date,
+        Closing_Date: sequelize.fn("GETDATE"),
         Procument_Staff_ID: req.body.userID,
       });
-
-      await models.Purchase_Order_Items_Qty.update(
-        { isPublished: true },
-        {
-          where: {
-            P_Order_Id: req.body.order,
-            Item_No: req.body.item,
-          },
-        }
-      );
 
       await quota.save().then((quota) => {
         res.json({ state: 201, Quota: quota });
       });
+
+      await models.Purchase_Order_Items_Qty.update(
+          { isPublished: true },
+          {
+            where: {
+              P_Order_Id: req.body.order,
+              Item_No: req.body.item,
+            },
+          }
+      );
+
     } else {
       res.json({ state: 200, Quota: isExist });
     }
