@@ -5,6 +5,10 @@ import Logo1 from '../assets/images/logo1.png'
 import Logo2 from '../assets/images/logo2.png'
 import {useHistory} from "react-router-dom";
 import axios from "axios";
+import {toast} from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
+toast.configure();
 
 const { Header } = Layout;
 
@@ -47,6 +51,7 @@ const Login = () => {
                     alert("Invalid login");
                 }
 
+                toast.success("Logged in successfully");
                 localStorage.setItem("user_id",res.data.user.User_ID);
             }
             else{

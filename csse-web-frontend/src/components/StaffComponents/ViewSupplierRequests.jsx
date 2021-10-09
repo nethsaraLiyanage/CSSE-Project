@@ -3,6 +3,10 @@ import { Space, Input, Button, Card, Avatar, List, Tag } from "antd";
 import axios from "axios";
 import {useHistory,useParams} from "react-router-dom";
 import moment from "moment";
+import {toast} from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
+toast.configure();
 
 const ViewSupplierRequests = () => {
 
@@ -38,7 +42,7 @@ const ViewSupplierRequests = () => {
         axios.post("http://localhost:8090/requisition/request/approve", payload).then((res) => {
           console.log(res.data.state);
           if(res.data.state == 201){
-            alert("Order Placed Successfully")
+              toast.success("Order Placed Successfully");
             history.push('/placed-orders')
           }
         }).catch((err) => {
@@ -67,6 +71,11 @@ const ViewSupplierRequests = () => {
 
   return (
     <div>
+        <div style={{ marginTop: '10%', marginLeft: '40%' }}>
+            { requests.length === 0 &&
+            <h1>No suppliers yet</h1>
+            }
+        </div>
         {requests.map((request) => (
         <Card
           type="inner"
