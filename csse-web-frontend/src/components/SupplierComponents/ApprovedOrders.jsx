@@ -51,7 +51,7 @@ class ApprovedOrders extends Component {
     render() {
         return (
             <div>
-                <Card title="Applied Orders">
+                <Card title="My Approved Orders">
                     <Row>
                         {this.state.myQuotas.map(item => {
                         let color = 'yellow';
@@ -128,7 +128,7 @@ class ApprovedOrders extends Component {
                     <Col><p><Tag color="#87d068">{this.state.sendMore}</Tag> more Unit(s).</p></Col>
                     </Row>
 
-                    
+
                     
                 </Modal>
             </div>

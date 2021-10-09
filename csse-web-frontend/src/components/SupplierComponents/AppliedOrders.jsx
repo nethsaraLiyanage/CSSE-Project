@@ -79,7 +79,7 @@ handleCancel = () => {
               <Badge.Ribbon text={status} color={color}>
                 <Card
                   type="inner"
-                  title={item.Item_No +" units from "+ item.Item_Name}
+                  title={item.quantity +" units from "+ item.Item_Name}
                 >
                     
                     <Row style={{marginTop:5}}>

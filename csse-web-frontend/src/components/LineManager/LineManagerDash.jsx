@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Layout, Menu, Breadcrumb } from 'antd';
+import { Layout, Menu, Breadcrumb,Avatar, Image, Dropdown, Button } from 'antd';
 import AllRequesitions from './AllRequesitions';
 import Logo1 from './../../assets/images/logo1.png'
 import PastRequesitions from './PastRequesitions';
@@ -11,11 +11,49 @@ class LineManagerDash extends Component {
     constructor(props){
         super(props);
         this.state = {
-            selectedItem:'1'
+            selectedItem:'1',
+            user :localStorage.getItem('user_id')
         }
     }
 
+    logout = () => {
+      window.localStorage.clear()
+      window.location.replace('/')
+    }
+    componentDidMount(){
+      if(this.state.user === null){
+        window.location.replace('/')
+      }
+    }
   render() {
+
+    const menu = (
+      <Menu>
+        <Menu.Item 
+          // onClick={this.logout}
+        >
+          <a target="_blank" rel="noopener noreferrer" >
+              <Button block 
+                // onClick={this.logout}
+              >
+                  Profile
+              </Button>
+          </a>
+        </Menu.Item>
+        <Menu.Item 
+          onClick={this.logout}
+        >
+          <a target="_blank" rel="noopener noreferrer" >
+              <Button block type="primary" danger 
+                onClick={this.logout}
+              >
+                  LOG OUT
+              </Button>
+          </a>
+        </Menu.Item>
+      </Menu>
+  );
+
     var component
     if(this.state.selectedItem === '1'){
         component = <AllRequesitions/>
@@ -42,7 +80,13 @@ class LineManagerDash extends Component {
               {/* {new Array(5).fill(null).map((_, index) => {
                 const key = index + 1;
                 return <Menu.Item key={key}>{`nav ${key}`}</Menu.Item>;
+                
               })} */}
+               <Menu.Item style={{marginLeft:'55%'}}>
+                  <Dropdown  overlay={menu} placement="bottomRight" arrow>
+                    <Avatar pre  src={<Image src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />}  />
+                  </Dropdown>
+                </Menu.Item>
             </Menu>
           </Header>
           <Content style={{ padding: '0 50px' }}>
