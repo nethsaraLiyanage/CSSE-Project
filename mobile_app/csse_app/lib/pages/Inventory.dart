@@ -184,7 +184,7 @@ class _InventoryState extends State<Inventory> {
                           ],
                         ),
                         Text(
-                          'Inventory',
+                          'Inventory (' + siteController.text +')',
                           style: TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: 30,
