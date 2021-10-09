@@ -98,4 +98,39 @@ router.get('/approvedApplyies/:id', async (req, res, _next) => {
 
 });
 
+
+//Get allcompleted a supplier which are approved
+router.get('/completed/:id', async (req, res, _next) => {
+
+  await models.Shipping_Order.findAll({
+    where: {
+      Supplier_Id : req.params.id,
+      Status : 'approved'
+    },
+      include: [{
+          model:models.Shipping_Order_Items_Qty, as: 'Shipping_Order_Items_Qties',
+        include: [
+          {
+            model: models.Items, as: 'Item_No_Item'
+          }
+        ]
+      }]
+  }).then( data => {
+      res.json(data);
+  })
+
+});
+
+//Get payment details for a shipping order
+router.get('/payment/:id', async (req, res, _next) => {
+
+  await models.Payment.findAll({
+    where: {
+      S_OrderId : req.params.id,
+    }
+  }).then( data => {
+      res.json(data);
+  })
+
+});
 module.exports = router;
