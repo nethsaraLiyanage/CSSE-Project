@@ -51,4 +51,44 @@ router.post("/createGoodsRecipt", async (req, res, _next) => {
     }
   });
 
+
+  //Get Sites By Site Manager
+router.get("/getGoodReciptsBySupplierId/:id", async (req, res, _next) => {
+try{
+  await models.Item_Supplier.findAll({
+
+    where : {
+      Supplier_ID : req.params.id,
+    },
+    include: [
+      {
+        model: models.Goods_Recipt,
+        as: "Goods_Recipts",
+
+        include:[
+          {
+            model : models.Goods_Recipt_Order_Items_Qty,
+            as : "Goods_Recipt_Order_Items_Qties",
+
+            include:[
+              {
+                model : models.Items,
+                as : "Item_No_Item"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+  }).then((data) => {
+    res.json({ status: 200 , data: data });
+  });
+
+}
+catch(err){
+  console.log(err)
+}
+    
+  });
+
   module.exports = router;

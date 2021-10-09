@@ -20,7 +20,7 @@ router.get("/getSiteByManagerId/:id", async (req, res, _next) => {
         }
       ],
     }).then((data) => {
-      res.json({ data: data });
+      res.json({status: 200,  data: data });
     });
   });
 

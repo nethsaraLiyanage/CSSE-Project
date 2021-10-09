@@ -7,6 +7,7 @@ import SupplierViewRequisitions from './SupplierViewRequisitions';
 import SupplierOrders from './SupplierOrders';
 import AppliedOrders from './AppliedOrders';
 import ApprovedOrders from './ApprovedOrders';
+import DeliveryLogs from './DeliveryLogs';
 
 const { Header, Content, Footer } = Layout;
 
@@ -28,6 +29,8 @@ class SupplierDash extends Component {
         component = <ApprovedOrders/>
     }else if(this.state.selectedItem === '4'){
         component = <SupplierOrders/>
+    }else if(this.state.selectedItem === '5'){
+      component = <DeliveryLogs/>
     }
     const menu = (
       <Menu>
@@ -69,6 +72,7 @@ class SupplierDash extends Component {
                 <Menu.Item key="2" onClick={() => {this.setState({ selectedItem: '2'})}}>Applied Orders</Menu.Item>
                 <Menu.Item key="3" onClick={() => {this.setState({ selectedItem: '3'})}}>My Approved Orders</Menu.Item>
                 <Menu.Item key="4" onClick={() => {this.setState({ selectedItem: '4'})}}>Completed Orders</Menu.Item>
+                <Menu.Item key="5" onClick={() => {this.setState({ selectedItem: '5'})}}>My Delivery Logs</Menu.Item>
                 
                 <Menu.Item style={{marginLeft:'55%'}}>
                   <Dropdown  overlay={menu} placement="bottomRight" arrow>

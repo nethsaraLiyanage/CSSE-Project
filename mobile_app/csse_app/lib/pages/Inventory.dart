@@ -157,10 +157,8 @@ class _InventoryState extends State<Inventory> {
                 (BuildContext context, AsyncSnapshot<List<dynamic>> snapshot) {
               List<ItemsModel>? itrmsList = snapshot.data![0];
               InventoryItems? InventoryItemsList = snapshot.data![1];
-              debugPrint(itrmsList.toString());
               if (snapshot.hasData) {
                 _currentSelectedValue = itrmsList![0].itemNo;
-                // getUser();
                 return Padding(
                   padding: const EdgeInsets.fromLTRB(20.0, 50.0, 20.0, 50.0),
                   child: SingleChildScrollView(
