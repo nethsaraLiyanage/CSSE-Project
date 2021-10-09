@@ -134,6 +134,13 @@ class ApprovedOrders extends Component {
                                 disableStatus = 'disable'
                             }
                             let sendMore = item.Shipping_Order_Items_Qties[0].Remaining_Qty;
+                            let display = ""
+
+                            if(sendMore == 0){
+
+                                display = 'disable'
+
+                            }
                             return (
                                 <Col span={12} style={{ paddingRight: '20px' }}>
                                     {/* <Badge.Ribbon text={status} color={color}> */}
@@ -165,7 +172,7 @@ class ApprovedOrders extends Component {
                                         <Row style={{ marginTop: 10 }}>
                                             <br />
                                             <Col span={16}></Col>
-                                            <Col span={6}><Button span={6} type="primary" block onClick={() => this.showModal(item)}>Send a unit</Button></Col>
+                                            <Col span={6}><Button span={6} type="primary" disabled={display} block onClick={() => this.showModal(item)}>Send a unit</Button></Col>
                                         </Row>
                                     </Card>
                                     {/* </Badge.Ribbon> */}
