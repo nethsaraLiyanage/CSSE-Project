@@ -82,7 +82,7 @@ class LineManagerDash extends Component {
                 return <Menu.Item key={key}>{`nav ${key}`}</Menu.Item>;
                 
               })} */}
-               <Menu.Item style={{marginLeft:'55%'}}>
+                <Menu.Item style={{marginLeft:'55%'}}>
                   <Dropdown  overlay={menu} placement="bottomRight" arrow>
                     <Avatar pre  src={<Image src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />}  />
                   </Dropdown>
