@@ -11,12 +11,13 @@ class SupplierOrders extends Component {
       myQuotas:[],
       selectedItem:{},
       sendMore:0,
+      payment:{},
       visible:false
     }
   }
 
   fetchMyQuotas = () =>{
-    fetch('http://localhost:8090/supplier/approvedApplyies/'+this.state.supplierId).then(res => res.json()).then(data =>{
+    fetch('http://localhost:8090/supplier/completed/'+this.state.supplierId).then(res => res.json()).then(data =>{
       this.setState({myQuotas: data})
     //   console.log(data)
     }).catch(err =>{
@@ -28,8 +29,15 @@ componentDidMount(){
     this.fetchMyQuotas()
 }
 
-  showModal = () => {
+  showModal = (id) => {
+    fetch('http://localhost:8090/supplier/payment/'+id).then(res => res.json()).then(data =>{
+      this.setState({payment: data})
+    //   console.log(data)
+    }).catch(err =>{
+      console.log(err);
+    })
     this.setState({visible:true})
+
   };
 
   handleOk = () => {
@@ -48,31 +56,33 @@ componentDidMount(){
         <Row>
 
         {this.state.myQuotas.map(item => {
-          let status = 'Pending';
           let color = 'yellow'
-          let sendMore =  item.Item_No - item.quantity;
-          if(sendMore == 0){
-            status = 'Completed';
-            color = 'green'
+          let status =  item.Shipping_Order_Items_Qties[0].payment_status;
+          let txt = 'Pending'
+          let display = 'disable'
+          if(status == 'approved'){
+            color = '#87d068';
+            txt = 'Approved';
+            display = ''
           }
           return(
             <Col span={12} style={{paddingRight:'20px'}}>
             <Card 
               style={{ marginTop: 16 }} 
               type="inner" 
-              title={item.Item_No +" units from "+ item.Item_Name}
+              title={item.Shipping_Order_Items_Qties[0].Total_Qty +" units from "+ item.Shipping_Order_Items_Qties[0].Item_No_Item.Item_Name}
             >
-              <p>Deliverd as {item.No_Of_Deliveries} unit(s).</p>
+              {/* <p>Deliverd as {item.No_Of_Deliveries} unit(s).</p> */}
               <Space>
-                Status:
-                <Tag color={color}>{status}</Tag>
+                Supply Status:
+                <Tag color='green'>{item.Status}</Tag>
               </Space>
               <br />
               <Space style={{ marginTop: 16 }}>
                 Payment:
-                <Tag color="#108ee9">Completed</Tag>
-                <Button type="secondary" onClick={this.showModal}>
-                  View
+                <Tag color={color}>{txt}</Tag>
+                <Button type="secondary" disabled={display} onClick={()=> this.showModal(item.S_Order_Id)}>
+                  View Payment Details
                 </Button>
                 <Modal
                   title="Payment"
@@ -80,9 +90,11 @@ componentDidMount(){
                   onOk={this.handleOk}
                   onCancel={this.handleCancel}
                 >
-                  <p>Item: 100 metal bars</p>
-                  <p>Status: Completed</p>
-                  <p>Payment: Rs 40000.00</p>
+                  <p>Payment ID : {this.state.payment.Payment_Id}</p>
+                  <br />
+                  <p>Paid Date : {this.state.payment.Date}</p>
+                  <br />
+                  <p>Paid Amount : Rs {this.state.payment.Ammount}.00</p>
                 </Modal>
               </Space>
             </Card>

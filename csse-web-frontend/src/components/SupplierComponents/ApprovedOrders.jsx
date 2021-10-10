@@ -111,7 +111,7 @@ class ApprovedOrders extends Component {
 
         return (
             <div>
-                <Card title="Applied Orders">
+                <Card title="My Approved Orders">
                     <Row>
                         {this.state.myQuotas.map(item => {
                             let color = 'yellow';
@@ -216,9 +216,6 @@ class ApprovedOrders extends Component {
                         <Col span={16} offset={1}><Text strong>Total Value of Goods Recipt Items:</Text></Col>
                         <Col><Title level={5}>{Number(this.state.totalValue)}.00 Rs</Title></Col>
                     </Row>
-
-
-
                 </Modal>
             </div>
         )

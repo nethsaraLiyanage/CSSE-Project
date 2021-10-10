@@ -136,10 +136,10 @@ router.post("/request/approve", async (req, res, _next) => {
   });
 
     const shipping_order = models.Shipping_Order.build({
-      Ordered_Date: req.body.order_date,
+      Ordered_Date: sequelize.fn("GETDATE"),
       Status: "pending",
       Required_Date: req.body.requested_date,
-      Sub_Total: req.body.total,
+      Sub_Total: req.body.price,
       P_Order_Id: req.body.p_order,
       Supplier_Id: req.body.supplier
     });
@@ -225,11 +225,14 @@ router.get("/quota-requests", async (req, res, _next) => {
       {
         model: models.Purchase_Order_Items_Qty,
         as: "P_Order",
+        where: {
+          isPublished: true,
+        },
         include: [
           {
             model: models.Items,
             as: "Item_No_Item",
-          },
+          }, //returns item
           {
             model: models.Purchase_Order,
             as: "P_Order",
@@ -244,8 +247,8 @@ router.get("/quota-requests", async (req, res, _next) => {
       },
     ],
   }).then((data) => {
-    const final = data.filter((v,i,a)=>a.findIndex(t=>(JSON.stringify(t) === JSON.stringify(v)))===i);
-    res.json({ quotas: final });
+    const result =  _.uniqBy(data, e => { return e.Quota_Request_Id });
+    res.json({ quotas: data });
   });
 }
 catch(e){
@@ -317,6 +320,16 @@ router.get("/placed-orders", async (req, res, _next) => {
       {
         model: models.Items,
         as: "Item_No_Item",
+      },
+      {
+        model: models.Shipping_Order,
+        as: "S_Order",
+        include:[
+          {
+            model: models.GeneralUser,
+            as: "Supplier",
+          }
+        ]
       },
     ],
   }).then((data) => {

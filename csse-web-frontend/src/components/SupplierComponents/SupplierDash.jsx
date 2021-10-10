@@ -15,8 +15,19 @@ class SupplierDash extends Component {
     constructor(props){
         super(props);
         this.state = {
-            selectedItem:'1'
+            selectedItem:'1',
+            user :localStorage.getItem('user_id')
         }
+    }
+
+    logout = () => {
+      window.localStorage.clear()
+      window.location.replace('/')
+    }
+    componentDidMount(){
+      if(this.state.user === null){
+        window.location.replace('/')
+      }
     }
 
   render() {
@@ -46,11 +57,11 @@ class SupplierDash extends Component {
           </a>
         </Menu.Item>
         <Menu.Item 
-          // onClick={this.logout}
+          onClick={this.logout}
         >
           <a target="_blank" rel="noopener noreferrer" >
               <Button block type="primary" danger 
-                // onClick={this.logout}
+                onClick={this.logout}
               >
                   LOG OUT
               </Button>
@@ -74,7 +85,7 @@ class SupplierDash extends Component {
                 <Menu.Item key="4" onClick={() => {this.setState({ selectedItem: '4'})}}>Completed Orders</Menu.Item>
                 <Menu.Item key="5" onClick={() => {this.setState({ selectedItem: '5'})}}>My Delivery Logs</Menu.Item>
                 
-                <Menu.Item style={{marginLeft:'55%'}}>
+                <Menu.Item style={{marginLeft:'45%'}}>
                   <Dropdown  overlay={menu} placement="bottomRight" arrow>
                     <Avatar pre  src={<Image src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />}  />
                   </Dropdown>
